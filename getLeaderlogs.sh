@@ -22,6 +22,6 @@ taskset -c 0,1,2,3,4,5 cncli leaderlog --pool-id $pool_id --pool-vrf-skey $vrf_k
 echo "CNCLI leaderlog FINISHED" >&2
 echo "Starting image generation" >&2
 sleep 1
-curl localhost:8080/trigger?pool=VENUS
+curl localhost:8080/trigger?pool=venus
 sleep 5
 echo "Bash script finished"
