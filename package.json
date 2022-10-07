@@ -5,7 +5,8 @@
   "main": "node.js",
   "dependencies": {
     "dotenv": "^16.0.3",
-    "express": "^4.18.1"
+    "express": "^4.18.1",
+    "node-schedule": "^2.1.0"
   },
   "devDependencies": {},
   "scripts": {
