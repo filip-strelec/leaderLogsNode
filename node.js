@@ -58,10 +58,10 @@ app.get("/", function (request, response) {
 
 app.get("/trigger", function (request, response) {
     //show this file when the "/" is requested
+const poolTicker = request.query.pool
 
 
-
-    response.end("wassup")
+    response.end("triggerTriggered", poolTicker)
 });
 
 console.log("starting the web server at localhost:8080");
