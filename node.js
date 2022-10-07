@@ -4,16 +4,28 @@ dotenv.config();
 //use the application off of express.
 var app = express();
 //const { exec } = require('child_process');
+const schedule = require('node-schedule');
 
 
+let nodeStartedDate = new Date();
+const millisecondsInFiveDays = 4.32*Math.pow(10,8)
 
-let executionDate = new Date();
-const milisecondsInFiveDays = 4.32*Math.pow(10,8)
+let executionDate = new Date(nodeStartedDate.getTime()+millisecondsInFiveDays)
 
-let newDate = new Date(executionDate.getTime()+milisecondsInFiveDays)
 
-let testSchedule;
+let testSchedule = (executionDate)=>{
+console.log("schedule triggerd");
+const job = schedule.scheduleJob(executionDate, function(){
+    console.log('Scheduled leaderlogs script triggered');
+    const currentExecutionDate = executionDate;
+    executionDate = new Date(currentExecutionDate.getTime()+millisecondsInFiveDays)
+    testSchedule(executionDate);
+    initializeScript();
+  });
+}
 
+testSchedule(executionDate);
+initializeScript();
 
 const initializeScript = ()=>{
     var spawn = require('child_process').spawn;
@@ -36,7 +48,7 @@ const initializeScript = ()=>{
     
 }
 
-initializeScript();
+//initializeScript();
 
 //define the route for "/"
 app.get("/", function (request, response){
