@@ -28,7 +28,7 @@ let testSchedule = (executionDate) => {
 
 const initializeScript = () => {
     var spawn = require('child_process').spawn;
-    var child = spawn(`sh ${__dirname}/getLeaderlogs.sh`);
+    var child = spawn(`${__dirname}/getLeaderlogs.sh`);
     var scriptOutput = "";
 
     child.stdout.setEncoding('utf8');
