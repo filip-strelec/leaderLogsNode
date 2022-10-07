@@ -2,4 +2,4 @@ cncli.db
 cncli.db-shm
 cncli.db-wal
 .env
-
+node_modules
