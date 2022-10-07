@@ -1,8 +1,8 @@
 #!/usr/bin/bash
 echo "Running leaderLogsScript..." >&2
 echo "Reading env..."  >&2
-
-echo "NAJVAZNIssJE $pool_id" >&2
+#source env.cfg
+echo "Pool ID $pool_id" >&2
 
 echo "Deleting old stakeSnapshot.json" >&2
 rm ./results/stakeSnapshot.json
