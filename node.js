@@ -24,8 +24,7 @@ let testSchedule = (executionDate) => {
     });
 }
 
-testSchedule(executionDate);
-initializeScript();
+
 
 const initializeScript = () => {
     var spawn = require('child_process').spawn;
@@ -48,7 +47,8 @@ const initializeScript = () => {
 
 }
 
-//initializeScript();
+testSchedule(executionDate);
+initializeScript();
 
 //define the route for "/"
 app.get("/", function (request, response) {
