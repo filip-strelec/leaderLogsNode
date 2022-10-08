@@ -4,6 +4,7 @@
   "description": "",
   "main": "node.js",
   "dependencies": {
+    "canvas": "^2.10.1",
     "dotenv": "^16.0.3",
     "express": "^4.18.1",
     "node-schedule": "^2.1.0"
