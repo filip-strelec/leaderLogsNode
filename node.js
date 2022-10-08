@@ -80,7 +80,7 @@ const canvasDrawAndExport = async (poolTicker) => {
 
     const canvas = createCanvas(width, height);
     const context = canvas.getContext("2d");
-
+    context.fillStyle = "#419A96";
 
     switch (poolTicker) {
         case 'MINES':
@@ -98,11 +98,12 @@ const canvasDrawAndExport = async (poolTicker) => {
           break;
         default:
           console.log(`defaultCanvasDraw (VENUS)`);
+          
       }
       
       await downloadImage(logoURL, `./pngOutput/${poolTicker}Ticker.png`);
 
-    context.fillStyle = "#419A96";
+    
     context.fillRect(0, 0, width, height);
 
     context.font = "bold 52pt 'PT Sans'";
