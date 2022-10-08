@@ -171,5 +171,5 @@ app.get("/trigger", function (request, response) {
 });
 
 console.log("starting the web server at localhost:8080");
-app.listen(8080);
+app.listen(Number(process.env.port));
 
