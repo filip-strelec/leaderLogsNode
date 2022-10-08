@@ -1,0 +1,1 @@
+This folder is can be accesed from the frontend
