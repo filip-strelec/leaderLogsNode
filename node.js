@@ -62,9 +62,11 @@ const getJsonFromFile = (poolTicker) => {
 }
 
 const canvasDrawAndExport = async (poolTicker) => {
-    const poolID = process.env.pool_id;
-    const logoURL = `https://cdn.adapools.org/pool_logo/${poolID}.png`;
-    await downloadImage(logoURL, `./pngOutput/${poolTicker}Ticker.png`);
+    let poolID = process.env.pool_id;
+    let logoURL = `https://cdn.adapools.org/pool_logo/${poolID}.png`;
+
+
+  
     const stakeSnapshotJson = getJsonFromFile(poolTicker);
     const epoch = stakeSnapshotJson.epoch;
     const epochSlots = stakeSnapshotJson.epochSlots;
@@ -78,7 +80,29 @@ const canvasDrawAndExport = async (poolTicker) => {
 
     const canvas = createCanvas(width, height);
     const context = canvas.getContext("2d");
-    context.fillStyle = "#764abc";
+
+
+    switch (poolTicker) {
+        case 'MINES':
+          logoURL = `https://cdn.adapools.org/pool_logo/3e5fcbaf750c0291cecb72384091724a1c2d35da10a71473e16c926f.png`;
+          context.fillStyle = "#1FD1D1";
+
+          break;
+        case 'CPU':
+          logoURL = `https://cdn.adapools.org/pool_logo/b45c1860e038baa0642b352ccf447ed5e14430342a11dd75bae52f39.png`;
+         context.fillStyle = "#2991B8"
+          break;
+        case 'ERA':
+          logoURL = `https://cdn.adapools.org/pool_logo/13375a4a5470b564246a3251ea0ccfef046ee5bcaf3ed6de6315abc7.png`;
+          context.fillStyle = "#8CC164"
+          break;
+        default:
+          console.log(`defaultCanvasDraw (VENUS)`);
+      }
+      
+      await downloadImage(logoURL, `./pngOutput/${poolTicker}Ticker.png`);
+
+    context.fillStyle = "#419A96";
     context.fillRect(0, 0, width, height);
 
     context.font = "bold 52pt 'PT Sans'";
