@@ -8,6 +8,6 @@ The rest is pretty straightforward
 
 1. Create your `.env` file (based on `.env.sample`)
 2. `npm i`
-3. `node node.js`
+3. `npm run start`
 
 The script will start querying cncli and cardano-cli, and it will make a schedule to do the same in 5 days
