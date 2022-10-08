@@ -9,9 +9,9 @@ rm ./stakeSnapshot$pool_ticker.json
 echo "Running cardano-cli query stake-snapshot..." >&2
 cardano-cli query stake-snapshot --stake-pool-id $pool_id --mainnet >> ./results/stakeSnapshot$pool_ticker.json
 
-POOL_STAKE=$(jq .poolStakeMark ./results/stakeSnapshot.json)
+POOL_STAKE=$(jq .poolStakeMark ./results/stakeSnapshot$pool_ticker.json)
 echo "POOL_STAKE  $POOL_STAKE"
-ACTIVE_STAKE=$(jq .activeStakeMark ./results/stakeSnapshot.json)
+ACTIVE_STAKE=$(jq .activeStakeMark ./results/stakeSnapshot$pool_ticker.json)
 echo "ACTIVE STAKE  $ACTIVE_STAKE"
 
 echo "Deleting old leaderlogs.json" >&2
