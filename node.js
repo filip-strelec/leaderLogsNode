@@ -74,7 +74,7 @@ const canvasDrawAndExport = async (poolTicker) => {
     console.log("Nr. of slots assigned:" + epochSlots);
 
     const width = 1600;
-    const height = 900;
+    const height = 260 + Math.ceil(assignedSlots.length/3)*50;
 
     const canvas = createCanvas(width, height);
     const context = canvas.getContext("2d");
