@@ -170,6 +170,35 @@ const canvasDrawAndExport = async (poolTicker) => {
 
 }
 
+let epochPromise = new Promise(function(myResolve, myReject) {
+
+    var spawn = require('child_process').spawn;
+    var child = spawn(`${__dirname}/getEpoch.sh`);
+    var scriptOutput = "";
+
+    child.stdout.setEncoding('utf8');
+    child.stdout.on('data', function (data) {
+        console.log(data);
+        data = data.toString();
+        scriptOutput += data;
+    });
+
+    child.stderr.setEncoding('utf8');
+    child.stderr.on('data', function (data) {
+        console.log(data);
+        data = data.toString();
+        scriptOutput += data;
+    });
+
+    
+    child.on("close", (code) => {
+        console.log(`child process exited with code ${code}`);
+       myResolve(code);
+        
+    });
+
+
+});
 
 
 const initializeScript = () => {
@@ -213,27 +242,33 @@ app.get("/trigger", function (request, response) {
 app.get("/api", function (request, res) {
    // res.writeHead(200, { "Content-Type": "application/json" })
    // res.writeHead(200, { "Access-Control-Allow-Origin": "*" })
-    let result = [];
-    const VenusOld = getJsonFromFile("VENUS", true);
-    const Venus = getJsonFromFile("VENUS");
-    const CpuOld = getJsonFromFile("CPU", true);
-    const Cpu = getJsonFromFile("CPU");
-    const MinesOld = getJsonFromFile("MINES", true);
-    const Mines = getJsonFromFile("MINES");
-    const EraOld = getJsonFromFile("ERA", true);
-    const Era = getJsonFromFile("ERA");
-    const epochInfo = getJsonEpochInfo();
-    result.push(epochInfo);
-    result.push(VenusOld);
-    result.push(Venus);
-    result.push(CpuOld);
-    result.push(Cpu);
-    result.push(MinesOld);
-    result.push(Mines);
-    result.push(EraOld);
-    result.push(Era);
 
-    res.end(JSON.stringify(result));
+   epochPromise.then((code)=>{
+console.log("epoch fetched with code " + code);
+
+let result = [];
+const VenusOld = getJsonFromFile("VENUS", true);
+const Venus = getJsonFromFile("VENUS");
+const CpuOld = getJsonFromFile("CPU", true);
+const Cpu = getJsonFromFile("CPU");
+const MinesOld = getJsonFromFile("MINES", true);
+const Mines = getJsonFromFile("MINES");
+const EraOld = getJsonFromFile("ERA", true);
+const Era = getJsonFromFile("ERA");
+const epochInfo = getJsonEpochInfo();
+result.push(epochInfo);
+result.push(VenusOld);
+result.push(Venus);
+result.push(CpuOld);
+result.push(Cpu);
+result.push(MinesOld);
+result.push(Mines);
+result.push(EraOld);
+result.push(Era);
+
+res.end(JSON.stringify(result));
+   })
+  
 });
 
 console.log("starting the web server at localhost:8080");
