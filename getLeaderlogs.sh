@@ -43,6 +43,8 @@ ACTIVE_STAKE=$(jq .activeStakeMark ./results/stakeSnapshotERA.json)
 echo "ACTIVE STAKE  $ACTIVE_STAKE"
 
 echo "Deleting old leaderlogsERA.json" >&2
+rm ./results/OLDleaderlogsERA.json
+cp ./results/leaderlogsERA.json ./results/OLDleaderlogsERA.json
 rm ./results/leaderlogsERA.json
 echo "Running CNCLI leaderlog for ERA..." >&2
 #Taskset is used to assign a task to 0-5 cores (delete taskset -c 0,1,2,3,4,5 if you want to use all cores )
@@ -67,6 +69,8 @@ ACTIVE_STAKE=$(jq .activeStakeMark ./results/stakeSnapshotCPU.json)
 echo "ACTIVE STAKE  $ACTIVE_STAKE"
 
 echo "Deleting old leaderlogsCPU.json" >&2
+rm ./results/OLDleaderlogsCPU.json
+cp ./results/leaderlogsCPU.json ./results/OLDleaderlogsCPU.json
 rm ./results/leaderlogsCPU.json
 echo "Running CNCLI leaderlog for CPU..." >&2
 #Taskset is used to assign a task to 0-5 cores (delete taskset -c 0,1,2,3,4,5 if you want to use all cores )
@@ -92,6 +96,8 @@ ACTIVE_STAKE=$(jq .activeStakeMark ./results/stakeSnapshotMINES.json)
 echo "ACTIVE STAKE  $ACTIVE_STAKE"
 
 echo "Deleting old leaderlogsMINES.json" >&2
+rm ./results/OLDleaderlogsMINES.json
+cp ./results/leaderlogsMINES.json ./results/OLDleaderlogsMINES.json
 rm ./results/leaderlogsMINES.json
 echo "Running CNCLI leaderlog for MINES..." >&2
 #Taskset is used to assign a task to 0-5 cores (delete taskset -c 0,1,2,3,4,5 if you want to use all cores )
