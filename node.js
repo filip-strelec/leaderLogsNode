@@ -33,12 +33,17 @@ function callEveryHour() {
     }, 1000 * 60 * 60);
 }
 
-callEveryHour();
-const getEpoch =  () => {
+//callEveryHour();
+
+
+
+
+
+const getEpoch =   () => {
     var spawn = require('child_process').spawn;
     var child = spawn(`${__dirname}/getEpoch.sh`);
     var scriptOutput = "";
-
+    
     child.stdout.setEncoding('utf8');
     child.stdout.on('data', function (data) {
         console.log(data);
@@ -53,12 +58,13 @@ const getEpoch =  () => {
         scriptOutput += data;
     });
 
-    
-    child.on("close", (code) => {
-        console.log(`child process exited with code ${code}`);
+   
+    child.on("close",  (code) => {
+        console.log("closed bash epoch script");
        
-        
     });
+    
+
 
 }
 
@@ -248,9 +254,42 @@ app.get("/trigger", function (request, response) {
 });
 
 
-app.get("/api", function (request, res) {
+app.get("/api", async function (request, res) {
    // res.writeHead(200, { "Content-Type": "application/json" })
    // res.writeHead(200, { "Access-Control-Allow-Origin": "*" })
+
+
+   const promiseEpoch = new Promise((res, rej) => {
+  
+    var spawn = require('child_process').spawn;
+    var child = spawn(`${__dirname}/getEpoch.sh`);
+    var scriptOutput = "";
+    
+    child.stdout.setEncoding('utf8');
+    child.stdout.on('data', function (data) {
+        console.log(data);
+        data = data.toString();
+        scriptOutput += data;
+    });
+
+    child.stderr.setEncoding('utf8');
+    child.stderr.on('data', function (data) {
+        console.log(data);
+        data = data.toString();
+        scriptOutput += data;
+    });
+
+   
+    child.on("close",  (code) => {
+        console.log("closed bash epoch");
+        res(code);
+       
+    });
+    
+    
+});
+
+
     let result = [];
     const VenusOld = getJsonFromFile("VENUS", true);
     const Venus = getJsonFromFile("VENUS");
@@ -260,6 +299,7 @@ app.get("/api", function (request, res) {
     const Mines = getJsonFromFile("MINES");
     const EraOld = getJsonFromFile("ERA", true);
     const Era = getJsonFromFile("ERA");
+    await Promise.resolve(promiseEpoch);
     const epochInfo = getJsonEpochInfo();
     result.push(epochInfo);
     result.push(VenusOld);
