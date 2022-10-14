@@ -48,12 +48,17 @@ async function downloadImage(url, filepath) {
 
 
 
-const getJsonFromFile = (poolTicker, old = false) => {
+const getJsonFromFile = (poolTicker, old = false, epochInfo=false) => {
     let jsonified = "";
     try {
         let rawData
+        if (epochInfo){
+        rawData = fs.readFileSync(`./results/epochInfo.json`) ;
+        }
+        else{
         old ? rawdata = fs.readFileSync(`./results/OLDleaderlogs${poolTicker}.json`) : rawdata = fs.readFileSync(`./results/leaderlogs${poolTicker}.json`);
-        jsonified = JSON.parse(rawdata);
+    }
+    jsonified = JSON.parse(rawdata);
     }
 
     catch (e) {
@@ -209,7 +214,8 @@ app.get("/api", function (request, res) {
     const Mines = getJsonFromFile("MINES");
     const EraOld = getJsonFromFile("ERA", true);
     const Era = getJsonFromFile("ERA");
-
+    const epochInfo = getJsonFromFile("", false, true);
+    result.push(epochInfo);
     result.push(VenusOld);
     result.push(Venus);
     result.push(CpuOld);
