@@ -198,8 +198,8 @@ app.get("/trigger", function (request, response) {
 
 
 app.get("/api", function (request, res) {
-    res.writeHead(200, { "Content-Type": "application/json" })
-    res.writeHead(200, { "Access-Control-Allow-Origin": "*" })
+   // res.writeHead(200, { "Content-Type": "application/json" })
+   // res.writeHead(200, { "Access-Control-Allow-Origin": "*" })
     let result = [];
     const VenusOld = getJsonFromFile("VENUS", true);
     const Venus = getJsonFromFile("VENUS");
