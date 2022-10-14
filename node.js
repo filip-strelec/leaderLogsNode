@@ -47,24 +47,31 @@ async function downloadImage(url, filepath) {
 
 
 
+const getJsonEpochInfo = ()=>{
+    let jsonified = "";
 
-const getJsonFromFile = (poolTicker, old = false, epochInfo=false) => {
+    try{
+        const rawData=fs.readFileSync(`./results/epochInfo.json`);
+    jsonified = JSON.parse(rawData);
+}
+    catch (e) {
+        console.log("invalid json", e);
+    }
+    return jsonified;
+}
+
+const getJsonFromFile = (poolTicker, old = false) => {
     let jsonified = "";
     try {
         let rawData
-        if (epochInfo){
-        rawData = fs.readFileSync(`./results/epochInfo.json`) ;
-        }
-        else{
         old ? rawdata = fs.readFileSync(`./results/OLDleaderlogs${poolTicker}.json`) : rawdata = fs.readFileSync(`./results/leaderlogs${poolTicker}.json`);
-    }
+    
     jsonified = JSON.parse(rawdata);
     }
 
     catch (e) {
         console.log("invalid json", e);
     }
-    console.log(epochInfo,"VAZNO", jsonified);
     return jsonified;
 }
 
@@ -215,7 +222,7 @@ app.get("/api", function (request, res) {
     const Mines = getJsonFromFile("MINES");
     const EraOld = getJsonFromFile("ERA", true);
     const Era = getJsonFromFile("ERA");
-    const epochInfo = getJsonFromFile("", false, true);
+    const epochInfo = getJsonEpochInfo();
     result.push(epochInfo);
     result.push(VenusOld);
     result.push(Venus);
