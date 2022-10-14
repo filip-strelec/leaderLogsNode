@@ -219,7 +219,7 @@ app.get("/api", function (request, res) {
     result.push(EraOld);
     result.push(Era);
 
-    res.end(JSON.stringify(json));
+    res.end(JSON.stringify(result));
 });
 
 console.log("starting the web server at localhost:8080");
