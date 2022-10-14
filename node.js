@@ -64,7 +64,7 @@ const getJsonFromFile = (poolTicker, old = false, epochInfo=false) => {
     catch (e) {
         console.log("invalid json", e);
     }
-    console.log(epochInfo,"VAZNO", jsonified)M
+    console.log(epochInfo,"VAZNO", jsonified);
     return jsonified;
 }
 
