@@ -28,13 +28,9 @@ let testSchedule = (executionDate) => {
 
 function callEveryHour() {
     setInterval(()=>{
-
-
         getEpoch();
 
-
-
-    }, 2000);
+    }, 1000 * 60 * 60);
 }
 
 callEveryHour();
