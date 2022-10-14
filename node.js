@@ -48,10 +48,11 @@ async function downloadImage(url, filepath) {
 
 
 
-const getJsonFromFile = (poolTicker) => {
+const getJsonFromFile = (poolTicker, old = false) => {
     let jsonified = "";
     try {
-        const rawdata = fs.readFileSync(`./results/leaderlogs${poolTicker}.json`);
+        let rawData
+        old ? rawdata = fs.readFileSync(`./results/OLDleaderlogs${poolTicker}.json`) : rawdata = fs.readFileSync(`./results/leaderlogs${poolTicker}.json`);
         jsonified = JSON.parse(rawdata);
     }
 
@@ -74,7 +75,7 @@ const canvasDrawAndExport = async (poolTicker) => {
     console.log("Nr. of slots assigned:" + epochSlots);
     let height = 550;
     const width = 1600;
-    assignedSlots?.length > 0 && (height = 550 + Math.ceil(assignedSlots.length/3)*50);
+    assignedSlots?.length > 0 && (height = 550 + Math.ceil(assignedSlots.length / 3) * 50);
 
     const canvas = createCanvas(width, height);
     const context = canvas.getContext("2d");
@@ -168,6 +169,32 @@ app.get("/trigger", function (request, response) {
     const poolTicker = request.query.pool;
     canvasDrawAndExport(poolTicker.toUpperCase());
     response.end("Triggered Creating images for: " + poolTicker);
+});
+
+
+app.get("/api", function (request, res) {
+    res.writeHead(200, { "Content-Type": "application/json" })
+    res.writeHead(200, { "Access-Control-Allow-Origin": "*" })
+    let result = [];
+    const VenusOld = getJsonFromFile("VENUS", true);
+    const Venus = getJsonFromFile("VENUS");
+    const CpuOld = getJsonFromFile("CPU", true);
+    const Cpu = getJsonFromFile("CPU");
+    const MinesOld = getJsonFromFile("MINES", true);
+    const Mines = getJsonFromFile("MINES");
+    const EraOld = getJsonFromFile("ERA", true);
+    const Era = getJsonFromFile("ERA");
+
+    result.push(VenusOld);
+    result.push(Venus);
+    result.push(CpuOld);
+    result.push(Cpu);
+    result.push(MinesOld);
+    result.push(Mines);
+    result.push(EraOld);
+    result.push(Era);
+
+    res.end(JSON.stringify(json));
 });
 
 console.log("starting the web server at localhost:8080");

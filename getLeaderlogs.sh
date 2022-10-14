@@ -15,6 +15,8 @@ ACTIVE_STAKE=$(jq .activeStakeMark ./results/stakeSnapshot$pool_ticker.json)
 echo "ACTIVE STAKE  $ACTIVE_STAKE"
 
 echo "Deleting old leaderlogs.json$pool_ticker" >&2
+rm ./results/OLDleaderlogs$pool_ticker.json
+cp ./results/leaderlogs$pool_ticker.json ./results/OLDleaderlogs$pool_ticker.json
 rm ./results/leaderlogs$pool_ticker.json
 echo "Running CNCLI leaderlog for $pool_id..." >&2
 #Taskset is used to assign a task to 0-5 cores (delete taskset -c 0,1,2,3,4,5 if you want to use all cores )
