@@ -172,30 +172,6 @@ app.get("/trigger", function (request, response) {
 });
 
 
-app.get("/api", function (request, res) {
-    res.writeHead(200, { "Content-Type": "application/json" })
-    res.writeHead(200, { "Access-Control-Allow-Origin": "*" })
-    let result = [];
-    const VenusOld = getJsonFromFile("VENUS", true);
-    const Venus = getJsonFromFile("VENUS");
-    const CpuOld = getJsonFromFile("CPU", true);
-    const Cpu = getJsonFromFile("CPU");
-    const MinesOld = getJsonFromFile("MINES", true);
-    const Mines = getJsonFromFile("MINES");
-    const EraOld = getJsonFromFile("ERA", true);
-    const Era = getJsonFromFile("ERA");
-
-    result.push(VenusOld);
-    result.push(Venus);
-    result.push(CpuOld);
-    result.push(Cpu);
-    result.push(MinesOld);
-    result.push(Mines);
-    result.push(EraOld);
-    result.push(Era);
-
-    res.end(JSON.stringify(json));
-});
 
 console.log("starting the web server at localhost:8080");
 app.listen(Number(process.env.port));
