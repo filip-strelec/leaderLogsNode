@@ -90,7 +90,7 @@ async function downloadImage(url, filepath) {
 
 
 const getJsonEpochInfo = ()=>{
-    let jsonified = "";
+    let jsonified;
 
     try{
         const rawData=fs.readFileSync(`./results/epochInfo.json`);
@@ -103,7 +103,7 @@ const getJsonEpochInfo = ()=>{
 }
 
 const getJsonFromFile = (poolTicker, old = false) => {
-    let jsonified = "";
+    let jsonified;
     try {
         let rawData
         old ? rawdata = fs.readFileSync(`./results/OLDleaderlogs${poolTicker}.json`) : rawdata = fs.readFileSync(`./results/leaderlogs${poolTicker}.json`);
@@ -290,7 +290,7 @@ app.get("/api", async function (request, res) {
 });
 
 
-    let result = [];
+    let result = {};
     const VenusOld = getJsonFromFile("VENUS", true);
     const Venus = getJsonFromFile("VENUS");
     const CpuOld = getJsonFromFile("CPU", true);
@@ -301,16 +301,11 @@ app.get("/api", async function (request, res) {
     const Era = getJsonFromFile("ERA");
     await Promise.resolve(promiseEpoch);
     const epochInfo = getJsonEpochInfo();
-    result.push(epochInfo);
-    result.push(VenusOld);
-    result.push(Venus);
-    result.push(CpuOld);
-    result.push(Cpu);
-    result.push(MinesOld);
-    result.push(Mines);
-    result.push(EraOld);
-    result.push(Era);
-
+    result.epochInfo= epochInfo;
+    result.venus=[VenusOld, Venus];
+    result.era=[EraOld,Era];
+    result.mines=[MinesOld, Mines];
+    result.cpu=[CpuOld,Cpu];
     res.end(JSON.stringify(result));
 });
 
