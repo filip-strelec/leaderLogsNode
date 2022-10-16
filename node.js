@@ -307,15 +307,17 @@ app.get("/api", async function (request, res) {
     let activeStake = JSON.stringify({ activeStakeMark: "failed" });
     try {
         if (fs.existsSync("./results/stakeSnapshotVENUS.json")) {
+            console.log("trying to get the stake from VENUS");
             activeStake = getJsonNotPool('./results/stakeSnapshotVENUS.json');
         }
     } catch (err) {
-        console.error(err, "____trying to get from CPU!!!___");
+        console.log(err, "____trying to get from CPU!!!___");
         try {
+            console.log("trying to get the stake from CPU");
             activeStake = getJsonNotPool('./results/stakeSnapshotCPU.json');
         }
         catch {
-            console.error(err, "____ERROR trying to get from CPU!!!___");
+            console.log(err, "____ERROR trying to get from CPU!!!___");
 
         }
     }
