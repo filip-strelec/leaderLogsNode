@@ -11,8 +11,8 @@ const client = require('https');
 app.use(express.static('./pngOutput'));
 let nodeStartedDate = new Date();
 const millisecondsInFiveDays = 4.32 * Math.pow(10, 8)
-
-let executionDate = new Date(nodeStartedDate.getTime() + millisecondsInFiveDays)
+const firstTimeExecutionTimestamp = 1665921963274;
+let executionDate = nodeStartedDate;
 
 
 let testSchedule = (executionDate) => {
@@ -25,6 +25,16 @@ let testSchedule = (executionDate) => {
         initializeScript();
     });
 }
+
+
+while (firstTimeExecutionTimestamp < nodeStartedDate.getTime()) {
+    // code block to be executed
+    firstTimeExecutionTimestamp = firstTimeExecutionTimestamp + millisecondsInFiveDays
+  }
+  executionDate = firstTimeExecutionTimestamp;
+console.log("1st schedule to run:" + new Date(executionDate));
+testSchedule(executionDate);
+
 
 function callEveryHour() {
     setInterval(() => {
@@ -241,8 +251,8 @@ const initializeScript = () => {
 }
 
 //INIT!!!
-testSchedule(executionDate);
-initializeScript();
+//testSchedule(executionDate);
+//initializeScript();
 
 
 
