@@ -305,6 +305,7 @@ app.get("/api", async function (request, res) {
     await Promise.resolve(promiseEpoch);
     const epochInfo = getJsonNotPool('./results/epochInfo.json');
     let activeStake = JSON.stringify({ activeStakeMark: "failed" });
+    console.log("FILIP VAZNO",fs.existsSync("./results/stakeSnapshotVENUS.json"))
     try {
         if (fs.existsSync("./results/stakeSnapshotVENUS.json")) {
             console.log("trying to get the stake from VENUS");
