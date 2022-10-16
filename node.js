@@ -11,7 +11,7 @@ const client = require('https');
 app.use(express.static('./pngOutput'));
 let nodeStartedDate = new Date();
 const millisecondsInFiveDays = 4.32 * Math.pow(10, 8)
-let firstTimeExecutionTimestamp = 1665923492122;
+let firstTimeExecutionTimestamp = 1665916492122;
 let executionDate;
 
 
@@ -315,7 +315,6 @@ app.get("/api", async function (request, res) {
     await Promise.resolve(promiseEpoch);
     const epochInfo = getJsonNotPool('./results/epochInfo.json');
     let activeStake = JSON.stringify({ activeStakeMark: "failed" });
-    console.log("FILIP VAZNO", fs.existsSync("./results/stakeSnapshotVENUS.json"))
 
 
     const stat = fs.statSync('./results/stakeSnapshotVENUS.json');
