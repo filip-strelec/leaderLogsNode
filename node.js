@@ -11,8 +11,8 @@ const client = require('https');
 app.use(express.static('./pngOutput'));
 let nodeStartedDate = new Date();
 const millisecondsInFiveDays = 4.32 * Math.pow(10, 8)
-let firstTimeExecutionTimestamp = 1665923099100;
-let executionDate = nodeStartedDate;
+let firstTimeExecutionTimestamp = 1665923299100;
+let executionDate;
 
 
 let testSchedule = (executionDate) => {
@@ -20,7 +20,7 @@ let testSchedule = (executionDate) => {
     const job = schedule.scheduleJob(executionDate, function () {
         console.log('Scheduled leaderlogs script triggered');
         const currentExecutionDate = executionDate;
-        executionDate = new Date(currentExecutionDate.getTime() + millisecondsInFiveDays)
+        executionDate = new Date(currentExecutionDate + millisecondsInFiveDays)
         testSchedule(executionDate);
         initializeScript();
     });
