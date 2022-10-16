@@ -354,7 +354,7 @@ app.get("/api", async function (request, res) {
     // }
 
 
-    fs.readFile('./activeStake.txt', 'utf8', (err, data) => {
+    fs.readFile('./results/activeStake.txt', 'utf8', (err, data) => {
         if (err) {
           console.error(err);
           return;
@@ -364,7 +364,7 @@ app.get("/api", async function (request, res) {
 
 
     result.epochInfo = epochInfo;
-    result.epochInfo.activeStake = activeStake?.activeStakeMark;
+    result.epochInfo.activeStake = activeStake;
     result.venus = [VenusOld, Venus];
     result.era = [EraOld, Era];
     result.mines = [MinesOld, Mines];
