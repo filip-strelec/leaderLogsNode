@@ -114,7 +114,7 @@ const getJsonFromFile = (poolTicker, old = false) => {
 
     catch (e) {
         console.log("invalid json", e);
-        jsonified = JSON.parse({})
+        jsonified = JSON.stringify({ failed: "failed" })
 
     }
     return jsonified;
