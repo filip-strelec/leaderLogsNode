@@ -11,7 +11,7 @@ const client = require('https');
 app.use(express.static('./pngOutput'));
 let nodeStartedDate = new Date();
 const millisecondsInFiveDays = 4.32 * Math.pow(10, 8)
-const firstTimeExecutionTimestamp = 1665921963274;
+let firstTimeExecutionTimestamp = 1665921963274;
 let executionDate = nodeStartedDate;
 
 
