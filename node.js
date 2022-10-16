@@ -256,6 +256,8 @@ const initializeScript = () => {
 
 
 
+
+
 app.get("/", function (request, response) {
     response.sendFile(__dirname + "/index.html");
 });
@@ -314,29 +316,30 @@ app.get("/api", async function (request, res) {
     const Era = getJsonFromFile("ERA");
     await Promise.resolve(promiseEpoch);
     const epochInfo = getJsonNotPool('./results/epochInfo.json');
-    let activeStake = JSON.stringify({ activeStakeMark: "failed" });
+     let activeStake = 25170337993634444;
+    //= JSON.stringify({ activeStakeMark: "failed" });
 
 
-    const stat = fs.statSync('./results/stakeSnapshotVENUS.json');
-    console.log(stat.size);
+    // const stat = fs.statSync('./results/stakeSnapshotVENUS.json');
+    // console.log(stat.size);
 
-    if (stat.size === 0) {
-        const stat = fs.statSync('./results/stakeSnapshotMINES.json');
-        if (stat.size === 0) {
+    // if (stat.size === 0) {
+    //     const stat = fs.statSync('./results/stakeSnapshotMINES.json');
+    //     if (stat.size === 0) {
 
-            activeStake = getJsonNotPool('./results/stakeSnapshotCPU.json');
+    //         activeStake = getJsonNotPool('./results/stakeSnapshotCPU.json');
 
-        }
-        else {
-            const stat = fs.statSync('./results/stakeSnapshotMINES.json');
+    //     }
+    //     else {
+    //         const stat = fs.statSync('./results/stakeSnapshotMINES.json');
 
-        }
+    //     }
 
-    }
-    else {
-        activeStake = getJsonNotPool('./results/stakeSnapshotVENUS.json');
+    // }
+    // else {
+    //     activeStake = getJsonNotPool('./results/stakeSnapshotVENUS.json');
 
-    }
+    // }
 
     // if (fs.existsSync('./results/stakeSnapshotVENUS.json')) {
     //     if (fs.read('./results/stakeSnapshotVENUS.json').length === 0) {
@@ -349,6 +352,15 @@ app.get("/api", async function (request, res) {
     //     activeStake = getJsonNotPool('./results/stakeSnapshotCPU.json');
 
     // }
+
+
+    fs.readFile('./activeStake.txt', 'utf8', (err, data) => {
+        if (err) {
+          console.error(err);
+          return;
+        }
+        activeStake = data;
+      });
 
 
     result.epochInfo = epochInfo;

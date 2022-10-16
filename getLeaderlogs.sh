@@ -8,6 +8,9 @@ echo "Reading env..."  >&2
 #source env.cfg
 echo "Pool ID $pool_id" >&2
 
+rm ./results/activeStake.txt
+jq '.activeStakeMark' ./results/stakeSnapshotVENUS.json >> ./results/activeStake.txt
+
 echo "Deleting old stakeSnapshot$pool_ticker.json" >&2
 rm ./results/stakeSnapshot$pool_ticker.json
 echo "Running cardano-cli query stake-snapshot..." >&2
