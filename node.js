@@ -98,7 +98,7 @@ const getJsonNotPool = (path)=>{
 }
     catch (e) {
         console.log("invalid json", e);
-        jsonified=JSON.parse({})
+        jsonified=JSON.stringify({failed:"failed"});
     }
     return jsonified;
 }
@@ -304,7 +304,10 @@ app.get("/api", async function (request, res) {
     const Era = getJsonFromFile("ERA");
     await Promise.resolve(promiseEpoch);
     const epochInfo = getJsonNotPool('./results/epochInfo.json');
-    const activeStake = getJsonNotPool('./results/stakeSnapshotVENUS.json')
+    let activeStake = getJsonNotPool('./results/stakeSnapshotVENUS.json');
+    if (activeStake.failed){
+        activeStake = getJsonNotPool('./results/stakeSnapshotCPU.json');
+    }
     result.epochInfo= epochInfo;
     result.epochInfo.activeStake = activeStake?.activeStakeMark;
     result.venus=[VenusOld, Venus];
