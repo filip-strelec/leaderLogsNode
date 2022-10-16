@@ -305,18 +305,27 @@ app.get("/api", async function (request, res) {
     await Promise.resolve(promiseEpoch);
     const epochInfo = getJsonNotPool('./results/epochInfo.json');
     let activeStake = JSON.stringify({ activeStakeMark: "failed" });
-    console.log("FILIP VAZNO",fs.existsSync("./results/stakeSnapshotVENUS.json"))
+    console.log("FILIP VAZNO", fs.existsSync("./results/stakeSnapshotVENUS.json"))
 
 
     const stat = fs.statSync('./results/stakeSnapshotVENUS.json');
     console.log(stat.size);
 
     if (stat.size === 0) {
-  activeStake = getJsonNotPool('./results/stakeSnapshotCPU.json');
+        const stat = fs.statSync('./results/stakeSnapshotMINES.json');
+        if (stat.size === 0) {
+
+            activeStake = getJsonNotPool('./results/stakeSnapshotCPU.json');
+
+        }
+        else {
+            const stat = fs.statSync('./results/stakeSnapshotMINES.json');
+
+        }
 
     }
     else {
-      activeStake = getJsonNotPool('./results/stakeSnapshotVENUS.json');
+        activeStake = getJsonNotPool('./results/stakeSnapshotVENUS.json');
 
     }
 
@@ -331,7 +340,7 @@ app.get("/api", async function (request, res) {
     //     activeStake = getJsonNotPool('./results/stakeSnapshotCPU.json');
 
     // }
-    
+
 
     result.epochInfo = epochInfo;
     result.epochInfo.activeStake = activeStake?.activeStakeMark;
