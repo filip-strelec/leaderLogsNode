@@ -306,22 +306,21 @@ app.get("/api", async function (request, res) {
     const epochInfo = getJsonNotPool('./results/epochInfo.json');
     let activeStake = JSON.stringify({ activeStakeMark: "failed" });
     console.log("FILIP VAZNO",fs.existsSync("./results/stakeSnapshotVENUS.json"))
-    try {
-        if (fs.existsSync("./results/stakeSnapshotVENUS.json")) {
-            console.log("trying to get the stake from VENUS");
+
+
+
+    if (fs.existsSync('./results/stakeSnapshotVENUS.json')) {
+        if (fs.read('./results/stakeSnapshotVENUS.json').length === 0) {
+            activeStake = getJsonNotPool('./results/stakeSnapshotCPU.json');
+        } else {
             activeStake = getJsonNotPool('./results/stakeSnapshotVENUS.json');
         }
-    } catch (err) {
-        console.log(err, "____trying to get from CPU!!!___");
-        try {
-            console.log("trying to get the stake from CPU");
-            activeStake = getJsonNotPool('./results/stakeSnapshotCPU.json');
-        }
-        catch {
-            console.log(err, "____ERROR trying to get from CPU!!!___");
-
-        }
     }
+    else{
+        activeStake = getJsonNotPool('./results/stakeSnapshotCPU.json');
+
+    }
+    
     result.epochInfo = epochInfo;
     result.epochInfo.activeStake = activeStake?.activeStakeMark;
     result.venus = [VenusOld, Venus];
