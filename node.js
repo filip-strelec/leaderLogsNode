@@ -89,11 +89,11 @@ async function downloadImage(url, filepath) {
 
 
 
-const getJsonEpochInfo = ()=>{
+const getJsonNotPool = (path)=>{
     let jsonified;
 
     try{
-        const rawData=fs.readFileSync(`./results/epochInfo.json`);
+        const rawData=fs.readFileSync(path);
     jsonified = JSON.parse(rawData);
 }
     catch (e) {
@@ -300,8 +300,10 @@ app.get("/api", async function (request, res) {
     const EraOld = getJsonFromFile("ERA", true);
     const Era = getJsonFromFile("ERA");
     await Promise.resolve(promiseEpoch);
-    const epochInfo = getJsonEpochInfo();
+    const epochInfo = getJsonNotPool('./results/epochInfo.json');
+    const activeStake = getJsonNotPool('./results/stakeSnapshotVENUS.json')
     result.epochInfo= epochInfo;
+    result.epochInfo.activeStake = activeStake.activeStakeMark;
     result.venus=[VenusOld, Venus];
     result.era=[EraOld,Era];
     result.mines=[MinesOld, Mines];
