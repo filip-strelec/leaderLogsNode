@@ -354,13 +354,20 @@ app.get("/api", async function (request, res) {
     // }
 
 
-    fs.readFile('./results/activeStake.txt', 'utf8', (err, data) => {
-        if (err) {
-          console.error(err);
-          return;
-        }
-        activeStake = data;
-      });
+    const promiseActiveStake = new Promise((res, rej) => {
+
+        fs.readFile('./results/activeStake.txt', 'utf8', (err, data) => {
+            if (err) {
+              console.error(err);
+              rej(err);
+            }
+            activeStake = data;
+            res(data);
+          });
+
+    })
+
+    await Promise.resolve(promiseActiveStake);
 
 
     result.epochInfo = epochInfo;
