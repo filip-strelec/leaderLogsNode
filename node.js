@@ -361,7 +361,8 @@ app.get("/api", async function (request, res) {
               console.error(err);
               rej(err);
             }
-            activeStake = data;
+            activeStake = parseInt(data.slice(0,17))
+            ;
             res(data);
           });
 
