@@ -98,6 +98,7 @@ const getJsonNotPool = (path)=>{
 }
     catch (e) {
         console.log("invalid json", e);
+        jsonified=JSON.parse({})
     }
     return jsonified;
 }
@@ -113,6 +114,8 @@ const getJsonFromFile = (poolTicker, old = false) => {
 
     catch (e) {
         console.log("invalid json", e);
+        jsonified=JSON.parse({})
+
     }
     return jsonified;
 }
@@ -303,7 +306,7 @@ app.get("/api", async function (request, res) {
     const epochInfo = getJsonNotPool('./results/epochInfo.json');
     const activeStake = getJsonNotPool('./results/stakeSnapshotVENUS.json')
     result.epochInfo= epochInfo;
-    result.epochInfo.activeStake = activeStake.activeStakeMark;
+    result.epochInfo.activeStake = activeStake?.activeStakeMark;
     result.venus=[VenusOld, Venus];
     result.era=[EraOld,Era];
     result.mines=[MinesOld, Mines];
