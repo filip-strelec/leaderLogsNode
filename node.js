@@ -308,19 +308,31 @@ app.get("/api", async function (request, res) {
     console.log("FILIP VAZNO",fs.existsSync("./results/stakeSnapshotVENUS.json"))
 
 
+    const stat = fs.statSync('./results/stakeSnapshotVENUS.json');
+    console.log(stat.size);
 
-    if (fs.existsSync('./results/stakeSnapshotVENUS.json')) {
-        if (fs.read('./results/stakeSnapshotVENUS.json').length === 0) {
-            activeStake = getJsonNotPool('./results/stakeSnapshotCPU.json');
-        } else {
-            activeStake = getJsonNotPool('./results/stakeSnapshotVENUS.json');
-        }
-    }
-    else{
-        activeStake = getJsonNotPool('./results/stakeSnapshotCPU.json');
+    if (stat.size === 0) {
+  activeStake = getJsonNotPool('./results/stakeSnapshotCPU.json');
 
     }
+    else {
+      activeStake = getJsonNotPool('./results/stakeSnapshotVENUS.json');
+
+    }
+
+    // if (fs.existsSync('./results/stakeSnapshotVENUS.json')) {
+    //     if (fs.read('./results/stakeSnapshotVENUS.json').length === 0) {
+    //         activeStake = getJsonNotPool('./results/stakeSnapshotCPU.json');
+    //     } else {
+    //         activeStake = getJsonNotPool('./results/stakeSnapshotVENUS.json');
+    //     }
+    // }
+    // else{
+    //     activeStake = getJsonNotPool('./results/stakeSnapshotCPU.json');
+
+    // }
     
+
     result.epochInfo = epochInfo;
     result.epochInfo.activeStake = activeStake?.activeStakeMark;
     result.venus = [VenusOld, Venus];
