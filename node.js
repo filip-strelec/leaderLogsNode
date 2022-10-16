@@ -27,7 +27,7 @@ let testSchedule = (executionDate) => {
 }
 
 function callEveryHour() {
-    setInterval(() => {
+    setInterval(()=>{
         getEpoch();
 
     }, 1000 * 60 * 60);
@@ -39,11 +39,11 @@ function callEveryHour() {
 
 
 
-const getEpoch = () => {
+const getEpoch =   () => {
     var spawn = require('child_process').spawn;
     var child = spawn(`${__dirname}/getEpoch.sh`);
     var scriptOutput = "";
-
+    
     child.stdout.setEncoding('utf8');
     child.stdout.on('data', function (data) {
         console.log(data);
@@ -58,12 +58,12 @@ const getEpoch = () => {
         scriptOutput += data;
     });
 
-
-    child.on("close", (code) => {
+   
+    child.on("close",  (code) => {
         console.log("closed bash epoch script");
-
+       
     });
-
+    
 
 
 }
@@ -89,16 +89,16 @@ async function downloadImage(url, filepath) {
 
 
 
-const getJsonNotPool = (path) => {
+const getJsonNotPool = (path)=>{
     let jsonified;
 
-    try {
-        const rawData = fs.readFileSync(path);
-        jsonified = JSON.parse(rawData);
-    }
+    try{
+        const rawData=fs.readFileSync(path);
+    jsonified = JSON.parse(rawData);
+}
     catch (e) {
         console.log("invalid json", e);
-        jsonified = JSON.stringify({ failed: "failed" });
+        jsonified=JSON.stringify({failed:"failed"});
     }
     return jsonified;
 }
@@ -106,15 +106,15 @@ const getJsonNotPool = (path) => {
 const getJsonFromFile = (poolTicker, old = false) => {
     let jsonified;
     try {
-        let rawData
+        let rawdata;
         old ? rawdata = fs.readFileSync(`./results/OLDleaderlogs${poolTicker}.json`) : rawdata = fs.readFileSync(`./results/leaderlogs${poolTicker}.json`);
-
-        jsonified = JSON.parse(rawdata);
+    
+    jsonified = JSON.parse(rawdata);
     }
 
     catch (e) {
         console.log("invalid json", e);
-        jsonified = JSON.stringify({ failed: "failed" });
+        jsonified=JSON.parse({})
 
     }
     return jsonified;
@@ -125,7 +125,7 @@ const canvasDrawAndExport = async (poolTicker) => {
     let logoURL = `https://cdn.adapools.org/pool_logo/${poolID}.png`;
 
 
-
+  
     const stakeSnapshotJson = getJsonFromFile(poolTicker);
     const epoch = stakeSnapshotJson.epoch;
     const epochSlots = stakeSnapshotJson.epochSlots;
@@ -143,26 +143,26 @@ const canvasDrawAndExport = async (poolTicker) => {
 
     switch (poolTicker) {
         case 'MINES':
-            logoURL = `https://cdn.adapools.org/pool_logo/3e5fcbaf750c0291cecb72384091724a1c2d35da10a71473e16c926f.png`;
-            context.fillStyle = "#1FD1D1";
+          logoURL = `https://cdn.adapools.org/pool_logo/3e5fcbaf750c0291cecb72384091724a1c2d35da10a71473e16c926f.png`;
+          context.fillStyle = "#1FD1D1";
 
-            break;
+          break;
         case 'CPU':
-            logoURL = `https://cdn.adapools.org/pool_logo/b45c1860e038baa0642b352ccf447ed5e14430342a11dd75bae52f39.png`;
-            context.fillStyle = "#2991B8"
-            break;
+          logoURL = `https://cdn.adapools.org/pool_logo/b45c1860e038baa0642b352ccf447ed5e14430342a11dd75bae52f39.png`;
+         context.fillStyle = "#2991B8"
+          break;
         case 'ERA':
-            logoURL = `https://cdn.adapools.org/pool_logo/13375a4a5470b564246a3251ea0ccfef046ee5bcaf3ed6de6315abc7.png`;
-            context.fillStyle = "#8CC164"
-            break;
+          logoURL = `https://cdn.adapools.org/pool_logo/13375a4a5470b564246a3251ea0ccfef046ee5bcaf3ed6de6315abc7.png`;
+          context.fillStyle = "#8CC164"
+          break;
         default:
-            console.log(`defaultCanvasDraw (VENUS)`);
+          console.log(`defaultCanvasDraw (VENUS)`);
+          
+      }
+      
+      await downloadImage(logoURL, `./pngOutput/${poolTicker}Ticker.png`);
 
-    }
-
-    await downloadImage(logoURL, `./pngOutput/${poolTicker}Ticker.png`);
-
-
+    
     context.fillRect(0, 0, width, height);
 
     context.font = "bold 52pt 'PT Sans'";
@@ -258,39 +258,39 @@ app.get("/trigger", function (request, response) {
 
 
 app.get("/api", async function (request, res) {
-    // res.writeHead(200, { "Content-Type": "application/json" })
-    // res.writeHead(200, { "Access-Control-Allow-Origin": "*" })
+   // res.writeHead(200, { "Content-Type": "application/json" })
+   // res.writeHead(200, { "Access-Control-Allow-Origin": "*" })
 
 
-    const promiseEpoch = new Promise((res, rej) => {
-
-        var spawn = require('child_process').spawn;
-        var child = spawn(`${__dirname}/getEpoch.sh`);
-        var scriptOutput = "";
-
-        child.stdout.setEncoding('utf8');
-        child.stdout.on('data', function (data) {
-            console.log(data);
-            data = data.toString();
-            scriptOutput += data;
-        });
-
-        child.stderr.setEncoding('utf8');
-        child.stderr.on('data', function (data) {
-            console.log(data);
-            data = data.toString();
-            scriptOutput += data;
-        });
-
-
-        child.on("close", (code) => {
-            console.log("closed bash epoch");
-            res(code);
-
-        });
-
-
+   const promiseEpoch = new Promise((res, rej) => {
+  
+    var spawn = require('child_process').spawn;
+    var child = spawn(`${__dirname}/getEpoch.sh`);
+    var scriptOutput = "";
+    
+    child.stdout.setEncoding('utf8');
+    child.stdout.on('data', function (data) {
+        console.log(data);
+        data = data.toString();
+        scriptOutput += data;
     });
+
+    child.stderr.setEncoding('utf8');
+    child.stderr.on('data', function (data) {
+        console.log(data);
+        data = data.toString();
+        scriptOutput += data;
+    });
+
+   
+    child.on("close",  (code) => {
+        console.log("closed bash epoch");
+        res(code);
+       
+    });
+    
+    
+});
 
 
     let result = {};
@@ -304,50 +304,14 @@ app.get("/api", async function (request, res) {
     const Era = getJsonFromFile("ERA");
     await Promise.resolve(promiseEpoch);
     const epochInfo = getJsonNotPool('./results/epochInfo.json');
-    let activeStake = JSON.stringify({ activeStakeMark: "failed" });
-    console.log("FILIP VAZNO", fs.existsSync("./results/stakeSnapshotVENUS.json"))
-
-
-    const stat = fs.statSync('./results/stakeSnapshotVENUS.json');
-    console.log(stat.size);
-
-    if (stat.size === 0) {
-        const stat = fs.statSync('./results/stakeSnapshotMINES.json');
-        if (stat.size === 0) {
-
-            activeStake = getJsonNotPool('./results/stakeSnapshotCPU.json');
-
-        }
-        else {
-            const stat = fs.statSync('./results/stakeSnapshotMINES.json');
-
-        }
-
-    }
-    else {
-        activeStake = getJsonNotPool('./results/stakeSnapshotVENUS.json');
-
-    }
-
-    // if (fs.existsSync('./results/stakeSnapshotVENUS.json')) {
-    //     if (fs.read('./results/stakeSnapshotVENUS.json').length === 0) {
-    //         activeStake = getJsonNotPool('./results/stakeSnapshotCPU.json');
-    //     } else {
-    //         activeStake = getJsonNotPool('./results/stakeSnapshotVENUS.json');
-    //     }
-    // }
-    // else{
-    //     activeStake = getJsonNotPool('./results/stakeSnapshotCPU.json');
-
-    // }
-
-
-    result.epochInfo = epochInfo;
+    const activeStake = getJsonNotPool('./results/stakeSnapshotVENUS.json');
+    
+    result.epochInfo= epochInfo;
     result.epochInfo.activeStake = activeStake?.activeStakeMark;
-    result.venus = [VenusOld, Venus];
-    result.era = [EraOld, Era];
-    result.mines = [MinesOld, Mines];
-    result.cpu = [CpuOld, Cpu];
+    result.venus=[VenusOld, Venus];
+    result.era=[EraOld,Era];
+    result.mines=[MinesOld, Mines];
+    result.cpu=[CpuOld,Cpu];
     res.end(JSON.stringify(result));
 });
 
