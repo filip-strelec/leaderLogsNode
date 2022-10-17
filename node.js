@@ -1,5 +1,6 @@
 var express = require("express");
 const dotenv = require('dotenv');
+const cors = require('cors');
 dotenv.config();
 //use the application off of express.
 var app = express();
@@ -9,6 +10,11 @@ const { createCanvas, loadImage } = require("canvas");
 const fs = require("fs");
 const client = require('https');
 app.use(express.static('./pngOutput'));
+
+app.use(cors({
+    origin: '*'
+}));
+
 let nodeStartedDate = new Date();
 const millisecondsInFiveDays = 4.32 * Math.pow(10, 8)
 let firstTimeExecutionTimestamp = 1665916492122;
