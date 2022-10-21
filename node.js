@@ -278,7 +278,7 @@ app.get("/trigger", function (request, response) {
 app.get("/api", async function (request, res) {
     // res.writeHead(200, { "Content-Type": "application/json" })
     // res.writeHead(200, { "Access-Control-Allow-Origin": "*" })
-
+    res.type('json');
 
     const promiseEpoch = new Promise((res, rej) => {
 
