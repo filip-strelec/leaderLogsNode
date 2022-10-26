@@ -115,3 +115,6 @@ sleep 1
 curl localhost:8080/trigger?pool=MINES
 sleep 1
 echo "Bash script finished for MINES"
+
+#Restarting cardano-node to flush RAM
+sudo systemctl restart cnode.service
