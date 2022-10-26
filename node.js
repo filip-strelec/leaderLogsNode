@@ -22,7 +22,7 @@ let executionDate;
 
 
 let testSchedule = (executionDate) => {
-    console.log("scheduling the script to be run in 5 days");
+    console.log("scheduling the script to be run in 5 days:" +  new Date(executionDate));
     const job = schedule.scheduleJob(executionDate, function () {
         console.log('Scheduled leaderlogs script triggered');
         const currentExecutionDate = executionDate;
@@ -42,12 +42,12 @@ console.log("1st schedule to run:" + new Date(executionDate));
 testSchedule(executionDate);
 
 
-function callEveryHour() {
-    setInterval(() => {
-        getEpoch();
+// function callEveryHour() {
+//     setInterval(() => {
+//         getEpoch();
 
-    }, 1000 * 60 * 60);
-}
+//     }, 1000 * 60 * 60);
+// }
 
 //callEveryHour();
 
@@ -55,34 +55,34 @@ function callEveryHour() {
 
 
 
-const getEpoch = () => {
-    var spawn = require('child_process').spawn;
-    var child = spawn(`${__dirname}/getEpoch.sh`);
-    var scriptOutput = "";
+// const getEpoch = () => {
+//     var spawn = require('child_process').spawn;
+//     var child = spawn(`${__dirname}/getEpoch.sh`);
+//     var scriptOutput = "";
 
-    child.stdout.setEncoding('utf8');
-    child.stdout.on('data', function (data) {
-        console.log(data);
-        data = data.toString();
-        scriptOutput += data;
-    });
+//     child.stdout.setEncoding('utf8');
+//     child.stdout.on('data', function (data) {
+//         console.log(data);
+//         data = data.toString();
+//         scriptOutput += data;
+//     });
 
-    child.stderr.setEncoding('utf8');
-    child.stderr.on('data', function (data) {
-        console.log(data);
-        data = data.toString();
-        scriptOutput += data;
-    });
-
-
-    child.on("close", (code) => {
-        console.log("closed bash epoch script");
-
-    });
+//     child.stderr.setEncoding('utf8');
+//     child.stderr.on('data', function (data) {
+//         console.log(data);
+//         data = data.toString();
+//         scriptOutput += data;
+//     });
 
 
+//     child.on("close", (code) => {
+//         console.log("closed bash epoch script");
 
-}
+//     });
+
+
+
+// }
 
 
 async function downloadImage(url, filepath) {
@@ -322,7 +322,7 @@ app.get("/api", async function (request, res) {
     const Era = getJsonFromFile("ERA");
     await Promise.resolve(promiseEpoch);
     const epochInfo = getJsonNotPool('./results/epochInfo.json');
-     let activeStake = 25170337993634444;
+     let activeStake = 25170337993634444; //if  get active stake fails, this is a approximation
     //= JSON.stringify({ activeStakeMark: "failed" });
 
 
@@ -383,6 +383,7 @@ app.get("/api", async function (request, res) {
     result.era = [EraOld, Era];
     result.mines = [MinesOld, Mines];
     result.cpu = [CpuOld, Cpu];
+    result.next_run = new Date(executionDate);
     res.end(JSON.stringify(result));
 });
 
