@@ -118,4 +118,4 @@ echo "Bash script finished for MINES"
 
 echo "Script inished, restarting cnode.service to flush RAM"
 #Restarting cardano-node to flush RAM
-systemctl restart cnode.service
+sudo systemctl restart cnode.service
