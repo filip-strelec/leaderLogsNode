@@ -8,18 +8,31 @@ echo "Reading env..."  >&2
 #source env.cfg
 echo "Pool ID $pool_id" >&2
 
-rm ./results/activeStake.txt
-jq '.activeStakeMark' ./results/stakeSnapshotVENUS.json >> ./results/activeStake.txt
+
 
 echo "Deleting old stakeSnapshot$pool_ticker.json" >&2
 rm ./results/stakeSnapshot$pool_ticker.json
 echo "Running cardano-cli query stake-snapshot..." >&2
 cardano-cli query stake-snapshot --stake-pool-id $pool_id --mainnet >> ./results/stakeSnapshot$pool_ticker.json
+# Hardcoded JSON file path
+json_file="./results/stakeSnapshotVENUS.json"
 
-POOL_STAKE=$(jq .poolStakeMark ./results/stakeSnapshot$pool_ticker.json)
-echo "POOL_STAKE  $POOL_STAKE"
-ACTIVE_STAKE=$(jq .activeStakeMark ./results/stakeSnapshot$pool_ticker.json)
-echo "ACTIVE STAKE  $ACTIVE_STAKE"
+rm ./results/activeStake.txt
+jq -r '.total.stakeMark' "$json_file" >> ./results/activeStake.txt
+
+
+# Extract the pool ID dynamically
+pool_id=$(jq -r '.pools | keys[]' "$json_file")
+
+# Extract the "stakeMark" value for the dynamic pool ID
+POOL_STAKE=$(jq -r ".pools.\"$pool_id\".stakeMark" "$json_file")
+
+# Extract the "stakeMark" value from the "total" object
+ACTIVE_STAKE=$(jq -r '.total.stakeMark' "$json_file")
+
+
+echo "POOL_STAKE: $POOL_STAKE"
+echo "ACTIVE_STAKE: $ACTIVE_STAKE"
 
 echo "Deleting old leaderlogs.json$pool_ticker" >&2
 rm ./results/OLDleaderlogs$pool_ticker.json
@@ -44,10 +57,21 @@ rm ./results/stakeSnapshotERA.json
 echo "Running cardano-cli query stake-snapshot..." >&2
 cardano-cli query stake-snapshot --stake-pool-id 13375a4a5470b564246a3251ea0ccfef046ee5bcaf3ed6de6315abc7 --mainnet >> ./results/stakeSnapshotERA.json
 
-POOL_STAKE=$(jq .poolStakeMark ./results/stakeSnapshotERA.json)
-echo "POOL_STAKE  $POOL_STAKE"
-ACTIVE_STAKE=$(jq .activeStakeMark ./results/stakeSnapshotERA.json)
-echo "ACTIVE STAKE  $ACTIVE_STAKE"
+
+# Hardcoded JSON file path
+json_file="./results/stakeSnapshotERA.json"
+
+# Extract the pool ID dynamically
+pool_id=$(jq -r '.pools | keys[]' "$json_file")
+
+# Extract the "stakeMark" value for the dynamic pool ID
+POOL_STAKE=$(jq -r ".pools.\"$pool_id\".stakeMark" "$json_file")
+
+# Extract the "stakeMark" value from the "total" object
+ACTIVE_STAKE=$(jq -r '.total.stakeMark' "$json_file")
+
+echo "POOL_STAKE: $POOL_STAKE"
+echo "ACTIVE_STAKE: $ACTIVE_STAKE"
 
 echo "Deleting old leaderlogsERA.json" >&2
 rm ./results/OLDleaderlogsERA.json
@@ -70,10 +94,21 @@ rm ./results/stakeSnapshotCPU.json
 echo "Running cardano-cli query stake-snapshot..." >&2
 cardano-cli query stake-snapshot --stake-pool-id b45c1860e038baa0642b352ccf447ed5e14430342a11dd75bae52f39 --mainnet >> ./results/stakeSnapshotCPU.json
 
-POOL_STAKE=$(jq .poolStakeMark ./results/stakeSnapshotCPU.json)
-echo "POOL_STAKE  $POOL_STAKE"
-ACTIVE_STAKE=$(jq .activeStakeMark ./results/stakeSnapshotCPU.json)
-echo "ACTIVE STAKE  $ACTIVE_STAKE"
+# Hardcoded JSON file path
+json_file="./results/stakeSnapshotCPU.json"
+
+# Extract the pool ID dynamically
+pool_id=$(jq -r '.pools | keys[]' "$json_file")
+
+# Extract the "stakeMark" value for the dynamic pool ID
+POOL_STAKE=$(jq -r ".pools.\"$pool_id\".stakeMark" "$json_file")
+
+# Extract the "stakeMark" value from the "total" object
+ACTIVE_STAKE=$(jq -r '.total.stakeMark' "$json_file")
+
+echo "POOL_STAKE: $POOL_STAKE"
+echo "ACTIVE_STAKE: $ACTIVE_STAKE"
+
 
 echo "Deleting old leaderlogsCPU.json" >&2
 rm ./results/OLDleaderlogsCPU.json
@@ -97,11 +132,20 @@ rm ./results/stakeSnapshotMINES.json
 echo "Running cardano-cli query stake-snapshot..." >&2
 cardano-cli query stake-snapshot --stake-pool-id 3e5fcbaf750c0291cecb72384091724a1c2d35da10a71473e16c926f --mainnet >> ./results/stakeSnapshotMINES.json
 
-POOL_STAKE=$(jq .poolStakeMark ./results/stakeSnapshotMINES.json)
-echo "POOL_STAKE  $POOL_STAKE"
-ACTIVE_STAKE=$(jq .activeStakeMark ./results/stakeSnapshotMINES.json)
-echo "ACTIVE STAKE  $ACTIVE_STAKE"
+# Hardcoded JSON file path
+json_file="./results/stakeSnapshotMINES.json"
 
+# Extract the pool ID dynamically
+pool_id=$(jq -r '.pools | keys[]' "$json_file")
+
+# Extract the "stakeMark" value for the dynamic pool ID
+POOL_STAKE=$(jq -r ".pools.\"$pool_id\".stakeMark" "$json_file")
+
+# Extract the "stakeMark" value from the "total" object
+ACTIVE_STAKE=$(jq -r '.total.stakeMark' "$json_file")
+
+echo "POOL_STAKE: $POOL_STAKE"
+echo "ACTIVE_STAKE: $ACTIVE_STAKE"
 echo "Deleting old leaderlogsMINES.json" >&2
 rm ./results/OLDleaderlogsMINES.json
 cp ./results/leaderlogsMINES.json ./results/OLDleaderlogsMINES.json
@@ -116,6 +160,6 @@ curl localhost:8080/trigger?pool=MINES
 sleep 1
 echo "Bash script finished for MINES"
 
-echo "Script inished, restarting cnode.service to flush RAM"
+#echo "Script inished, restarting cnode.service to flush RAM"
 #Restarting cardano-node to flush RAM
-sudo systemctl restart cnode.service
+#sudo systemctl restart cnode.service

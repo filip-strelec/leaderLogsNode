@@ -1,0 +1,16 @@
+{
+  "status": "ok",
+  "epoch": 452,
+  "epochNonce": "8f6fb7e86f609a8c3db36b0d4f16fd79f68c40938cc7bdfd94ba646c4120b043",
+  "consensus": "praos",
+  "epochSlots": 0,
+  "epochSlotsIdeal": 0.02,
+  "maxPerformance": 0.0,
+  "poolId": "3e5fcbaf750c0291cecb72384091724a1c2d35da10a71473e16c926f",
+  "sigma": 8.503105989110515e-7,
+  "activeStake": 19556200679,
+  "totalActiveStake": 22998890880631860,
+  "d": 0.0,
+  "f": 0.05,
+  "assignedSlots": []
+}

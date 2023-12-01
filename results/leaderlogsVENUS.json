@@ -1,0 +1,41 @@
+{
+  "status": "ok",
+  "epoch": 452,
+  "epochNonce": "8f6fb7e86f609a8c3db36b0d4f16fd79f68c40938cc7bdfd94ba646c4120b043",
+  "consensus": "praos",
+  "epochSlots": 4,
+  "epochSlotsIdeal": 6.51,
+  "maxPerformance": 61.44,
+  "poolId": "19cb138eab81d3559e70094df2b6cb1742bf275e920300d5c3972253",
+  "sigma": 0.00030161583334297815,
+  "activeStake": 6936829638926,
+  "totalActiveStake": 22998890880631860,
+  "d": 0.0,
+  "f": 0.05,
+  "assignedSlots": [
+    {
+      "no": 1,
+      "slot": 109910771,
+      "slotInEpoch": 9971,
+      "at": "2023-12-01T16:31:02-08:00"
+    },
+    {
+      "no": 2,
+      "slot": 109992301,
+      "slotInEpoch": 91501,
+      "at": "2023-12-02T15:09:52-08:00"
+    },
+    {
+      "no": 3,
+      "slot": 110073524,
+      "slotInEpoch": 172724,
+      "at": "2023-12-03T13:43:35-08:00"
+    },
+    {
+      "no": 4,
+      "slot": 110226041,
+      "slotInEpoch": 325241,
+      "at": "2023-12-05T08:05:32-08:00"
+    }
+  ]
+}

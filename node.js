@@ -151,7 +151,9 @@ const canvasDrawAndExport = async (poolTicker) => {
     console.log("Nr. of slots assigned:" + epochSlots);
     let height = 550;
     const width = 1600;
-    assignedSlots?.length > 0 && (height = 550 + Math.ceil(assignedSlots.length / 3) * 50);
+if (assignedSlots){
+    assignedSlots.length > 0 && (height = 550 + Math.ceil(assignedSlots.length / 3) * 50);
+}
 
     const canvas = createCanvas(width, height);
     const context = canvas.getContext("2d");
@@ -176,7 +178,7 @@ const canvasDrawAndExport = async (poolTicker) => {
 
     }
 
-    await downloadImage(logoURL, `./pngOutput/${poolTicker}Ticker.png`);
+    //await downloadImage(logoURL, `./pngOutput/${poolTicker}Ticker.png`); // FOR DOWNLOADING IMAGE TICKERS TODO: FIX IT (wrong url currently)
 
 
     context.fillRect(0, 0, width, height);
@@ -258,7 +260,7 @@ const initializeScript = () => {
 
 //INIT!!!
 //testSchedule(executionDate);
-//initializeScript();
+initializeScript(); //TODO:: REMOVE THIS COMMENT IF YOU WANT TO SCAPE INSTANTLY
 
 
 
@@ -322,7 +324,7 @@ app.get("/api", async function (request, res) {
     const Era = getJsonFromFile("ERA");
     await Promise.resolve(promiseEpoch);
     const epochInfo = getJsonNotPool('./results/epochInfo.json');
-     let activeStake = 25170337993634444; //if  get active stake fails, this is a approximation
+     let activeStake = 22674711468934312; //if  get active stake fails, this is a approximation
     //= JSON.stringify({ activeStakeMark: "failed" });
 
 
@@ -376,6 +378,7 @@ app.get("/api", async function (request, res) {
 
     await Promise.resolve(promiseActiveStake);
 
+    
 
     result.epochInfo = epochInfo;
     result.epochInfo.activeStake = activeStake;
@@ -384,6 +387,9 @@ app.get("/api", async function (request, res) {
     result.mines = [MinesOld, Mines];
     result.cpu = [CpuOld, Cpu];
     result.next_run = new Date(executionDate);
+
+    console.log(result.next_run);
+    console.log(executionDate);
     res.end(JSON.stringify(result));
 });
 
