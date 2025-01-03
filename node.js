@@ -260,7 +260,7 @@ const initializeScript = () => {
 
 //INIT!!!
 //testSchedule(executionDate);
-initializeScript(); //TODO:: REMOVE THIS COMMENT IF YOU WANT TO SCAPE INSTANTLY
+//initializeScript(); //TODO:: REMOVE THIS COMMENT IF YOU WANT TO SCAPE INSTANTLY
 
 
 
@@ -393,6 +393,6 @@ app.get("/api", async function (request, res) {
     res.end(JSON.stringify(result));
 });
 
-console.log("starting the web server at localhost:8080");
+console.log("starting the web server at localhost:"+process.env.port);
 app.listen(Number(process.env.port));
 

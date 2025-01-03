@@ -1,7 +1,10 @@
 #!/usr/bin/bash
+export CARDANO_NODE_SOCKET_PATH=/opt/cardano/cnode/sockets/node.socket
 echo "Getting Epoch info"
 rm ./results/epochInfo.json
 cardano-cli query tip --mainnet >> ./results/epochInfo.json
+
+echo "PORT $port" >&2
 
 echo "Running leaderLogsScript for VENUS..." >&2
 echo "Reading env..."  >&2
@@ -40,11 +43,11 @@ cp ./results/leaderlogs$pool_ticker.json ./results/OLDleaderlogs$pool_ticker.jso
 rm ./results/leaderlogs$pool_ticker.json
 echo "Running CNCLI leaderlog for $pool_id..." >&2
 #Taskset is used to assign a task to 0-5 cores (delete taskset -c 0,1,2,3,4,5 if you want to use all cores )
-taskset -c 0,1,2,3,4,5 cncli leaderlog --pool-id $pool_id --pool-vrf-skey $vrf_key_location --byron-genesis $byron_genesis_location  --shelley-genesis $shelley_genesis_location  --active-stake $ACTIVE_STAKE --pool-stake $POOL_STAKE --ledger-set $search_type >> ./results/leaderlogs$pool_ticker.json
+taskset -c 0,1,2,3,4,5 cncli leaderlog   --consensus cpraos --pool-id $pool_id --pool-vrf-skey $vrf_key_location --byron-genesis $byron_genesis_location  --shelley-genesis $shelley_genesis_location  --active-stake $ACTIVE_STAKE --pool-stake $POOL_STAKE --ledger-set $search_type >> ./results/leaderlogs$pool_ticker.json
 echo "CNCLI leaderlog FINISHED" >&2
 echo "Starting image generation" >&2
 sleep 1
-curl localhost:8080/trigger?pool=$pool_ticker
+curl localhost:$port/trigger?pool=$pool_ticker
 sleep 1
 echo "Bash script finished for VENUS"
 
@@ -79,11 +82,11 @@ cp ./results/leaderlogsERA.json ./results/OLDleaderlogsERA.json
 rm ./results/leaderlogsERA.json
 echo "Running CNCLI leaderlog for ERA..." >&2
 #Taskset is used to assign a task to 0-5 cores (delete taskset -c 0,1,2,3,4,5 if you want to use all cores )
-taskset -c 0,1,2,3,4,5 cncli leaderlog --pool-id 13375a4a5470b564246a3251ea0ccfef046ee5bcaf3ed6de6315abc7 --pool-vrf-skey /opt/cardano/cnode/priv/vrf/era/vrf.skey --byron-genesis $byron_genesis_location  --shelley-genesis $shelley_genesis_location  --active-stake $ACTIVE_STAKE --pool-stake $POOL_STAKE --ledger-set $search_type >> ./results/leaderlogsERA.json
+taskset -c 0,1,2,3,4,5 cncli leaderlog  --consensus cpraos --pool-id 13375a4a5470b564246a3251ea0ccfef046ee5bcaf3ed6de6315abc7 --pool-vrf-skey /opt/cardano/cnode/priv/vrf/era/vrf.skey --byron-genesis $byron_genesis_location  --shelley-genesis $shelley_genesis_location  --active-stake $ACTIVE_STAKE --pool-stake $POOL_STAKE --ledger-set $search_type >> ./results/leaderlogsERA.json
 echo "CNCLI leaderlog FINISHED" >&2
 echo "Starting image generation" >&2
 sleep 1
-curl localhost:8080/trigger?pool=ERA
+curl localhost:$port/trigger?pool=ERA
 sleep 1
 echo "Bash script finished for ERA"
 
@@ -116,11 +119,11 @@ cp ./results/leaderlogsCPU.json ./results/OLDleaderlogsCPU.json
 rm ./results/leaderlogsCPU.json
 echo "Running CNCLI leaderlog for CPU..." >&2
 #Taskset is used to assign a task to 0-5 cores (delete taskset -c 0,1,2,3,4,5 if you want to use all cores )
-taskset -c 0,1,2,3,4,5 cncli leaderlog --pool-id b45c1860e038baa0642b352ccf447ed5e14430342a11dd75bae52f39 --pool-vrf-skey /opt/cardano/cnode/priv/vrf/cpu/vrf.skey --byron-genesis $byron_genesis_location  --shelley-genesis $shelley_genesis_location  --active-stake $ACTIVE_STAKE --pool-stake $POOL_STAKE --ledger-set $search_type >> ./results/leaderlogsCPU.json
+taskset -c 0,1,2,3,4,5 cncli leaderlog  --consensus cpraos --pool-id b45c1860e038baa0642b352ccf447ed5e14430342a11dd75bae52f39 --pool-vrf-skey /opt/cardano/cnode/priv/vrf/cpu/vrf.skey --byron-genesis $byron_genesis_location  --shelley-genesis $shelley_genesis_location  --active-stake $ACTIVE_STAKE --pool-stake $POOL_STAKE --ledger-set $search_type >> ./results/leaderlogsCPU.json
 echo "CNCLI leaderlog FINISHED" >&2
 echo "Starting image generation" >&2
 sleep 1
-curl localhost:8080/trigger?pool=CPU
+curl localhost:$port/trigger?pool=CPU
 sleep 1
 echo "Bash script finished for CPU"
 
@@ -152,11 +155,11 @@ cp ./results/leaderlogsMINES.json ./results/OLDleaderlogsMINES.json
 rm ./results/leaderlogsMINES.json
 echo "Running CNCLI leaderlog for MINES..." >&2
 #Taskset is used to assign a task to 0-5 cores (delete taskset -c 0,1,2,3,4,5 if you want to use all cores )
-taskset -c 0,1,2,3,4,5 cncli leaderlog --pool-id 3e5fcbaf750c0291cecb72384091724a1c2d35da10a71473e16c926f --pool-vrf-skey /opt/cardano/cnode/priv/vrf/mines/vrf.skey --byron-genesis $byron_genesis_location  --shelley-genesis $shelley_genesis_location  --active-stake $ACTIVE_STAKE --pool-stake $POOL_STAKE --ledger-set $search_type >> ./results/leaderlogsMINES.json
+taskset -c 0,1,2,3,4,5 cncli leaderlog  --consensus cpraos --pool-id 3e5fcbaf750c0291cecb72384091724a1c2d35da10a71473e16c926f --pool-vrf-skey /opt/cardano/cnode/priv/vrf/mines/vrf.skey --byron-genesis $byron_genesis_location  --shelley-genesis $shelley_genesis_location  --active-stake $ACTIVE_STAKE --pool-stake $POOL_STAKE --ledger-set $search_type >> ./results/leaderlogsMINES.json
 echo "CNCLI leaderlog FINISHED" >&2
 echo "Starting image generation" >&2
 sleep 1
-curl localhost:8080/trigger?pool=MINES
+curl localhost:$port/trigger?pool=MINES
 sleep 1
 echo "Bash script finished for MINES"
 
