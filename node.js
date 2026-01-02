@@ -119,25 +119,34 @@ const fetchGlobalData = async () => {
     const api = await initCexplorerApi();
 
     try {
-        // Get current epoch and network info
-        const epochResult = await api.getEpochDetail({ epoch_no: 'current' });
+        // Get current epoch list (first entry is current epoch)
+        const epochListResult = await api.getEpochList();
         const basicResult = await api.getMiscBasic();
 
-        const epochData = epochResult.data || {};
+        const currentEpoch = epochListResult.data?.data?.[0] || {};
         const basicData = basicResult.data || {};
+        const params = currentEpoch.params || {};
 
         return {
             epoch: {
-                no: epochData.no,
-                start_time: epochData.start_time
+                no: currentEpoch.no,
+                start_time: currentEpoch.start_time,
+                end_time: currentEpoch.end_time,
+                blk_count: currentEpoch.blk_count,
+                tx_count: currentEpoch.tx_count
             },
-            supply: basicData.supply,
+            block: basicData.block,
             epoch_param: {
-                optimal_pool_count: epochData.optimal_pool_count,
-                influence: epochData.influence,
-                monetary_expand_rate: epochData.monetary_expand_rate,
-                treasury_growth_rate: epochData.treasury_growth_rate,
-                decentralisation: epochData.decentralisation
+                optimal_pool_count: params.optimal_pool_count,
+                influence: params.influence,
+                monetary_expand_rate: params.monetary_expand_rate,
+                treasury_growth_rate: params.treasury_growth_rate,
+                decentralisation: params.decentralisation,
+                min_fee_a: params.min_fee_a,
+                min_fee_b: params.min_fee_b,
+                min_pool_cost: params.min_pool_cost,
+                key_deposit: params.key_deposit,
+                pool_deposit: params.pool_deposit
             }
         };
     } catch (error) {
