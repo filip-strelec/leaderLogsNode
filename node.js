@@ -49,6 +49,13 @@ let poolsCache = {
     TTL: 60 * 60 * 1000 // 1 hour in milliseconds
 };
 
+// Cache for global data (1 hour TTL)
+let globalCache = {
+    data: null,
+    lastFetched: null,
+    TTL: 60 * 60 * 1000 // 1 hour in milliseconds
+};
+
 // Function to fetch pool data from cexplorer API
 const fetchPoolsData = async () => {
     console.log('Fetching pools data from Cexplorer API...');
@@ -103,6 +110,69 @@ const getPoolsData = async () => {
         cached: false,
         cachedAt: new Date(now).toISOString(),
         nextRefresh: new Date(now + poolsCache.TTL).toISOString()
+    };
+};
+
+// Function to fetch global blockchain data from cexplorer API
+const fetchGlobalData = async () => {
+    console.log('Fetching global data from Cexplorer API...');
+    const api = await initCexplorerApi();
+
+    try {
+        // Get current epoch and network info
+        const epochResult = await api.getEpochDetail({ epoch_no: 'current' });
+        const basicResult = await api.getMiscBasic();
+
+        const epochData = epochResult.data || {};
+        const basicData = basicResult.data || {};
+
+        return {
+            epoch: {
+                no: epochData.no,
+                start_time: epochData.start_time
+            },
+            supply: basicData.supply,
+            epoch_param: {
+                optimal_pool_count: epochData.optimal_pool_count,
+                influence: epochData.influence,
+                monetary_expand_rate: epochData.monetary_expand_rate,
+                treasury_growth_rate: epochData.treasury_growth_rate,
+                decentralisation: epochData.decentralisation
+            }
+        };
+    } catch (error) {
+        console.error('Error fetching global data:', error.message);
+        throw error;
+    }
+};
+
+// Function to get global data (from cache or fresh)
+const getGlobalData = async () => {
+    const now = Date.now();
+
+    // Check if cache is valid
+    if (globalCache.data && globalCache.lastFetched && (now - globalCache.lastFetched < globalCache.TTL)) {
+        console.log('Returning cached global data');
+        return {
+            data: globalCache.data,
+            cached: true,
+            cachedAt: new Date(globalCache.lastFetched).toISOString(),
+            nextRefresh: new Date(globalCache.lastFetched + globalCache.TTL).toISOString()
+        };
+    }
+
+    // Fetch fresh data
+    const freshData = await fetchGlobalData();
+
+    // Update cache
+    globalCache.data = freshData;
+    globalCache.lastFetched = now;
+
+    return {
+        data: freshData,
+        cached: false,
+        cachedAt: new Date(now).toISOString(),
+        nextRefresh: new Date(now + globalCache.TTL).toISOString()
     };
 };
 
@@ -498,7 +568,7 @@ app.get("/api", async function (request, res) {
     res.end(JSON.stringify(result));
 });
 
-// Pools endpoint - returns pool information from Cexplorer API with 10-minute cache
+// Pools endpoint - returns pool information from Cexplorer API with 1-hour cache
 app.get("/pools", async function (request, res) {
     res.type('json');
 
@@ -509,6 +579,22 @@ app.get("/pools", async function (request, res) {
         console.error('Error in /pools endpoint:', error.message);
         res.status(500).json({
             error: 'Failed to fetch pools data',
+            message: error.message
+        });
+    }
+});
+
+// Global endpoint - returns global blockchain data from Cexplorer API with 1-hour cache
+app.get("/global", async function (request, res) {
+    res.type('json');
+
+    try {
+        const globalResult = await getGlobalData();
+        res.json(globalResult);
+    } catch (error) {
+        console.error('Error in /global endpoint:', error.message);
+        res.status(500).json({
+            error: 'Failed to fetch global data',
             message: error.message
         });
     }
