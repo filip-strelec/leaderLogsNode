@@ -125,7 +125,26 @@ const fetchGlobalData = async () => {
 
         const currentEpoch = epochListResult.data?.data?.[0] || {};
         const basicData = basicResult.data || {};
-        const params = currentEpoch.params || {};
+
+        // Try params_active first, fallback to params
+        const params = currentEpoch.params_active || currentEpoch.params || {};
+
+        // Get current epoch number for fetching detailed parameters
+        const currentEpochNo = currentEpoch.no || basicData.block?.epoch_no;
+
+        // Fetch detailed epoch parameters
+        let detailedParams = {};
+        if (currentEpochNo) {
+            try {
+                const epochParamResult = await api.getEpochDetailParam(currentEpochNo);
+                detailedParams = epochParamResult.data || {};
+            } catch (paramError) {
+                console.warn('Could not fetch detailed epoch params:', paramError.message);
+            }
+        }
+
+        // Merge params, preferring detailed params
+        const finalParams = { ...params, ...detailedParams };
 
         return {
             epoch: {
@@ -133,20 +152,26 @@ const fetchGlobalData = async () => {
                 start_time: currentEpoch.start_time,
                 end_time: currentEpoch.end_time,
                 blk_count: currentEpoch.blk_count,
-                tx_count: currentEpoch.tx_count
+                tx_count: currentEpoch.tx_count,
+                fees: currentEpoch.fees,
+                out_sum: currentEpoch.out_sum
             },
             block: basicData.block,
             epoch_param: {
-                optimal_pool_count: params.optimal_pool_count,
-                influence: params.influence,
-                monetary_expand_rate: params.monetary_expand_rate,
-                treasury_growth_rate: params.treasury_growth_rate,
-                decentralisation: params.decentralisation,
-                min_fee_a: params.min_fee_a,
-                min_fee_b: params.min_fee_b,
-                min_pool_cost: params.min_pool_cost,
-                key_deposit: params.key_deposit,
-                pool_deposit: params.pool_deposit
+                optimal_pool_count: finalParams.optimal_pool_count,
+                influence: finalParams.influence,
+                monetary_expand_rate: finalParams.monetary_expand_rate,
+                treasury_growth_rate: finalParams.treasury_growth_rate,
+                decentralisation: finalParams.decentralisation,
+                min_fee_a: finalParams.min_fee_a,
+                min_fee_b: finalParams.min_fee_b,
+                min_pool_cost: finalParams.min_pool_cost,
+                key_deposit: finalParams.key_deposit,
+                pool_deposit: finalParams.pool_deposit,
+                max_tx_size: finalParams.max_tx_size,
+                max_block_size: finalParams.max_block_size,
+                price_mem: finalParams.price_mem,
+                price_step: finalParams.price_step
             }
         };
     } catch (error) {
