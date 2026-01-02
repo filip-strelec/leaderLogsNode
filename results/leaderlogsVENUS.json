@@ -1,23 +1,41 @@
 {
   "status": "ok",
-  "epoch": 532,
-  "epochNonce": "7e9a14225e689ecec31afa317261780d9420f1c5a6460aba029d8e4215b5f108",
+  "epoch": 604,
+  "epochNonce": "b42a8aa7b858d0f6e4c9675342809f78e8e24543477af80d5653eb68286f8094",
   "consensus": "cpraos",
-  "epochSlots": 1,
-  "epochSlotsIdeal": 3.83,
-  "maxPerformance": 26.11,
+  "epochSlots": 4,
+  "epochSlotsIdeal": 3.59,
+  "maxPerformance": 111.42,
   "poolId": "19cb138eab81d3559e70094df2b6cb1742bf275e920300d5c3972253",
-  "sigma": 0.00017747782816507842,
-  "activeStake": 3872115531469,
-  "totalActiveStake": 21817460645661092,
+  "sigma": 0.000166245149823173,
+  "activeStake": 3554452998140,
+  "totalActiveStake": 21380792173008964,
   "d": 0.0,
   "f": 0.05,
   "assignedSlots": [
     {
       "no": 1,
-      "slot": 144687794,
-      "slotInEpoch": 226994,
-      "at": "2025-01-07T04:48:05-08:00"
+      "slot": 175684053,
+      "slotInEpoch": 119253,
+      "at": "2025-12-31T22:52:24-08:00"
+    },
+    {
+      "no": 2,
+      "slot": 175688285,
+      "slotInEpoch": 123485,
+      "at": "2026-01-01T00:02:56-08:00"
+    },
+    {
+      "no": 3,
+      "slot": 175754063,
+      "slotInEpoch": 189263,
+      "at": "2026-01-01T18:19:14-08:00"
+    },
+    {
+      "no": 4,
+      "slot": 175957474,
+      "slotInEpoch": 392674,
+      "at": "2026-01-04T02:49:25-08:00"
     }
   ]
 }

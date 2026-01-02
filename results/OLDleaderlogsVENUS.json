@@ -1,53 +1,53 @@
 {
   "status": "ok",
-  "epoch": 531,
-  "epochNonce": "d7e80a505bcd3725f4b1802b12c52a9cabe1549d3a7387af91815294152aa7b1",
+  "epoch": 603,
+  "epochNonce": "3a0715287bceedd596d719bb879fc1fb0d97d8dc5169766768a11d38b302d7da",
   "consensus": "cpraos",
   "epochSlots": 6,
-  "epochSlotsIdeal": 3.83,
-  "maxPerformance": 156.66,
+  "epochSlotsIdeal": 3.57,
+  "maxPerformance": 168.07,
   "poolId": "19cb138eab81d3559e70094df2b6cb1742bf275e920300d5c3972253",
-  "sigma": 0.000177507573295314,
-  "activeStake": 3870508223692,
-  "totalActiveStake": 21804749802154930,
+  "sigma": 0.00016548826602031443,
+  "activeStake": 3553894372417,
+  "totalActiveStake": 21475204604420372,
   "d": 0.0,
   "f": 0.05,
   "assignedSlots": [
     {
       "no": 1,
-      "slot": 144154573,
-      "slotInEpoch": 125773,
-      "at": "2025-01-01T00:41:04-08:00"
+      "slot": 175133087,
+      "slotInEpoch": 287,
+      "at": "2025-12-25T13:49:38-08:00"
     },
     {
       "no": 2,
-      "slot": 144216439,
-      "slotInEpoch": 187639,
-      "at": "2025-01-01T17:52:10-08:00"
+      "slot": 175228851,
+      "slotInEpoch": 96051,
+      "at": "2025-12-26T16:25:42-08:00"
     },
     {
       "no": 3,
-      "slot": 144332720,
-      "slotInEpoch": 303920,
-      "at": "2025-01-03T02:10:11-08:00"
+      "slot": 175393538,
+      "slotInEpoch": 260738,
+      "at": "2025-12-28T14:10:29-08:00"
     },
     {
       "no": 4,
-      "slot": 144369795,
-      "slotInEpoch": 340995,
-      "at": "2025-01-03T12:28:06-08:00"
+      "slot": 175426058,
+      "slotInEpoch": 293258,
+      "at": "2025-12-28T23:12:29-08:00"
     },
     {
       "no": 5,
-      "slot": 144407379,
-      "slotInEpoch": 378579,
-      "at": "2025-01-03T22:54:30-08:00"
+      "slot": 175538653,
+      "slotInEpoch": 405853,
+      "at": "2025-12-30T06:29:04-08:00"
     },
     {
       "no": 6,
-      "slot": 144421531,
-      "slotInEpoch": 392731,
-      "at": "2025-01-04T02:50:22-08:00"
+      "slot": 175557068,
+      "slotInEpoch": 424268,
+      "at": "2025-12-30T11:35:59-08:00"
     }
   ]
 }

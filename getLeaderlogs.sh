@@ -163,6 +163,48 @@ curl localhost:$port/trigger?pool=MINES
 sleep 1
 echo "Bash script finished for MINES"
 
+
+
+
+##CAHLI
+echo "Running leaderLogsScript for CAHLI..." >&2
+echo "Deleting old stakeSnapshotCAHLI.json" >&2
+rm ./results/stakeSnapshotCAHLI.json
+echo "Running cardano-cli query stake-snapshot..." >&2
+cardano-cli query stake-snapshot --stake-pool-id 3ee7ce97d36822f511cac6bbd76b70350684f8bb4ced5366842a96c9 --mainnet >> ./results/stakeSnapshotCAHLI.json
+
+# Hardcoded JSON file path
+json_file="./results/stakeSnapshotCAHLI.json"
+
+# Extract the pool ID dynamically
+pool_id=$(jq -r '.pools | keys[]' "$json_file")
+
+# Extract the "stakeMark" value for the dynamic pool ID
+POOL_STAKE=$(jq -r ".pools.\"$pool_id\".stakeMark" "$json_file")
+
+# Extract the "stakeMark" value from the "total" object
+ACTIVE_STAKE=$(jq -r '.total.stakeMark' "$json_file")
+
+echo "POOL_STAKE: $POOL_STAKE"
+echo "ACTIVE_STAKE: $ACTIVE_STAKE"
+echo "Deleting old leaderlogsCAHLI.json" >&2
+rm ./results/OLDleaderlogsCAHLI.json
+cp ./results/leaderlogsCAHLI.json ./results/OLDleaderlogsCAHLI.json
+rm ./results/leaderlogsCAHLI.json
+echo "Running CNCLI leaderlog for CAHLI..." >&2
+#Taskset is used to assign a task to 0-5 cores (delete taskset -c 0,1,2,3,4,5 if you want to use all cores )
+taskset -c 0,1,2,3,4,5 cncli leaderlog  --consensus cpraos --pool-id 3ee7ce97d36822f511cac6bbd76b70350684f8bb4ced5366842a96c9 --pool-vrf-skey /opt/cardano/cnode/priv/vrf/cahli/vrf.skey --byron-genesis $byron_genesis_location  --shelley-genesis $shelley_genesis_location  --active-stake $ACTIVE_STAKE --pool-stake $POOL_STAKE --ledger-set $search_type >> ./results/leaderlogsCAHLI.json
+echo "CNCLI leaderlog FINISHED" >&2
+echo "Starting image generation" >&2
+sleep 1
+curl localhost:$port/trigger?pool=CAHLI
+sleep 1
+echo "Bash script finished for CAHLI"
+
+
+
+
+
 #echo "Script inished, restarting cnode.service to flush RAM"
 #Restarting cardano-node to flush RAM
 #sudo systemctl restart cnode.service

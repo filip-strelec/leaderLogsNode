@@ -1,14 +1,14 @@
 {
     "pools": {
         "b45c1860e038baa0642b352ccf447ed5e14430342a11dd75bae52f39": {
-            "stakeGo": 77638525027,
-            "stakeMark": 77638525027,
-            "stakeSet": 77638525027
+            "stakeGo": 30645771776,
+            "stakeMark": 30645771776,
+            "stakeSet": 30645771776
         }
     },
     "total": {
-        "stakeGo": 21697209082962923,
-        "stakeMark": 21817460645661093,
-        "stakeSet": 21804749802154928
+        "stakeGo": 21451565514021817,
+        "stakeMark": 21380792173008964,
+        "stakeSet": 21475204604420372
     }
 }

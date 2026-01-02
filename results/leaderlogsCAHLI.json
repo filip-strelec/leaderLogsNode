@@ -1,0 +1,35 @@
+{
+  "status": "ok",
+  "epoch": 604,
+  "epochNonce": "b42a8aa7b858d0f6e4c9675342809f78e8e24543477af80d5653eb68286f8094",
+  "consensus": "cpraos",
+  "epochSlots": 3,
+  "epochSlotsIdeal": 1.42,
+  "maxPerformance": 211.27,
+  "poolId": "3ee7ce97d36822f511cac6bbd76b70350684f8bb4ced5366842a96c9",
+  "sigma": 0.00006569475327987002,
+  "activeStake": 1404605866734,
+  "totalActiveStake": 21380792173008964,
+  "d": 0.0,
+  "f": 0.05,
+  "assignedSlots": [
+    {
+      "no": 1,
+      "slot": 175854104,
+      "slotInEpoch": 289304,
+      "at": "2026-01-02T22:06:35-08:00"
+    },
+    {
+      "no": 2,
+      "slot": 175900495,
+      "slotInEpoch": 335695,
+      "at": "2026-01-03T10:59:46-08:00"
+    },
+    {
+      "no": 3,
+      "slot": 175937972,
+      "slotInEpoch": 373172,
+      "at": "2026-01-03T21:24:23-08:00"
+    }
+  ]
+}

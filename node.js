@@ -129,8 +129,9 @@ const getJsonFromFile = (poolTicker, old = false) => {
     }
 
     catch (e) {
-        console.log("invalid json", e);
+        console.log("invalid json",poolTicker, e);
         jsonified = JSON.stringify({ failed: "failed" });
+        console.log(rawdata);
 
     }
     return jsonified;
@@ -163,7 +164,11 @@ if (assignedSlots){
         case 'MINES':
             logoURL = `https://cdn.adapools.org/pool_logo/3e5fcbaf750c0291cecb72384091724a1c2d35da10a71473e16c926f.png`;
             context.fillStyle = "#1FD1D1";
-
+            break;
+        case 'CAHLI':
+            logoURL = `https://img.cexplorer.io/c/c/4/1/d/pool18mnua97ndq302yw2c6aaw6msx5rgf79mfnk4xe5y92tvjl45etl.png`;
+            context.fillStyle = "black";
+    
             break;
         case 'CPU':
             logoURL = `https://cdn.adapools.org/pool_logo/b45c1860e038baa0642b352ccf447ed5e14430342a11dd75bae52f39.png`;
@@ -320,6 +325,8 @@ app.get("/api", async function (request, res) {
     const Cpu = getJsonFromFile("CPU");
     const MinesOld = getJsonFromFile("MINES", true);
     const Mines = getJsonFromFile("MINES");
+    const CahliOld = getJsonFromFile("CAHLI", true);
+    const Cahli = getJsonFromFile("CAHLI");
     const EraOld = getJsonFromFile("ERA", true);
     const Era = getJsonFromFile("ERA");
     await Promise.resolve(promiseEpoch);
@@ -386,6 +393,7 @@ app.get("/api", async function (request, res) {
     result.era = [EraOld, Era];
     result.mines = [MinesOld, Mines];
     result.cpu = [CpuOld, Cpu];
+    result.cahli = [CahliOld, Cahli]
     result.next_run = new Date(executionDate);
 
     console.log(result.next_run);
