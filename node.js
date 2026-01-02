@@ -122,9 +122,11 @@ const fetchGlobalData = async () => {
         // Get current epoch list (first entry is current epoch)
         const epochListResult = await api.getEpochList();
         const basicResult = await api.getMiscBasic();
+        const constResult = await api.getMiscConst();
 
         const currentEpoch = epochListResult.data?.data?.[0] || {};
         const basicData = basicResult.data || {};
+        const constData = constResult.data || {};
 
         // Try params_active first, fallback to params
         const params = currentEpoch.params_active || currentEpoch.params || {};
@@ -157,6 +159,10 @@ const fetchGlobalData = async () => {
                 out_sum: currentEpoch.out_sum
             },
             block: basicData.block,
+            supply: {
+                circulating: constData.circulating_supply,
+                live_stake: constData.live_stake
+            },
             epoch_param: {
                 optimal_pool_count: finalParams.optimal_pool_count,
                 influence: finalParams.influence,
