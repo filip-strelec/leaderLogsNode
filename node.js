@@ -44,11 +44,11 @@ const POOLS = {
     'ERA': '13375a4a5470b564246a3251ea0ccfef046ee5bcaf3ed6de6315abc7'
 };
 
-// Cache for pool data (10 minutes TTL)
+// Cache for pool data (1 hour TTL)
 let poolsCache = {
     data: null,
     lastFetched: null,
-    TTL: 10 * 60 * 1000 // 10 minutes in milliseconds
+    TTL: 60 * 60 * 1000 // 1 hour in milliseconds
 };
 
 // Function to fetch pool data from cexplorer API
