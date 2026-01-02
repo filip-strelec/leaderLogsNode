@@ -34,14 +34,12 @@ const initCexplorerApi = async () => {
 };
 
 // Pool IDs to fetch (ticker -> pool_id mapping)
-// Using hex pool IDs from the codebase
 const POOLS = {
     'VENUS': 'pool1r8938r4ts8f4t8nsp9xl9dktzapt7f67jgpsp4wrju39xrdnaye',
-    
     'CAHLI': 'pool18mnua97ndq302yw2c6aaw6msx5rgf79mfnk4xe5y92tvjl45etl',
-    'MINES': '3e5fcbaf750c0291cecb72384091724a1c2d35da10a71473e16c926f',
-    'CPU': 'b45c1860e038baa0642b352ccf447ed5e14430342a11dd75bae52f39',
-    'ERA': '13375a4a5470b564246a3251ea0ccfef046ee5bcaf3ed6de6315abc7'
+    'MINES': 'pool18e0uhtm4pspfrnktwguypytjfgwz6dw6zzn3gulpdjfx7qd0439',
+    'CPU': 'pool1k3wpsc8q8za2qeptx5kv73r76hs5gvp59gga6ad6u5hnj3scy3q',
+    'ERA': 'pool1zvm45jj5wz6kgfr2xfg75rx0auzxaedu4ulddhnrzk4uwuyuvpn'
 };
 
 // Cache for pool data (1 hour TTL)
