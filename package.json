@@ -4,14 +4,15 @@
   "description": "",
   "main": "node.js",
   "dependencies": {
+    "@vellumlabs/cexplorer-api": "^1.0.5",
     "canvas": "^2.11.2",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
+    "node-fetch": "^2.7.0",
     "node-schedule": "^2.1.0",
     "nodemon": "^2.0.20"
   },
-  "devDependencies": {},
   "scripts": {
     "start": "node node.js",
     "test": "echo \"Error: no test specified\" && exit 1"

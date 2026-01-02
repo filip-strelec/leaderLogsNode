@@ -1,3 +1,9 @@
+// Polyfill fetch for Node 16 (required by cexplorer-api)
+const fetch = require('node-fetch');
+if (!globalThis.fetch) {
+    globalThis.fetch = fetch;
+}
+
 var express = require("express");
 const dotenv = require('dotenv');
 const cors = require('cors');
@@ -9,6 +15,99 @@ const schedule = require('node-schedule');
 const { createCanvas, loadImage } = require("canvas");
 const fs = require("fs");
 const client = require('https');
+
+// Cexplorer API - loaded dynamically since it's an ES Module
+let cexplorerApi = null;
+
+// Initialize Cexplorer API (called once on first use)
+const initCexplorerApi = async () => {
+    if (cexplorerApi) return cexplorerApi;
+
+    const api = await import('@vellumlabs/cexplorer-api');
+    api.initApi({
+        network: "mainnet-stage",
+        apiKey: process.env.CEXPLORER_API_KEY,
+    });
+    cexplorerApi = api;
+    console.log('Cexplorer API initialized');
+    return api;
+};
+
+// Pool IDs to fetch (ticker -> pool_id mapping)
+// Using hex pool IDs from the codebase
+const POOLS = {
+    'VENUS': 'pool1r8938r4ts8f4t8nsp9xl9dktzapt7f67jgpsp4wrju39xrdnaye',
+    
+    'CAHLI': 'pool18mnua97ndq302yw2c6aaw6msx5rgf79mfnk4xe5y92tvjl45etl',
+    'MINES': '3e5fcbaf750c0291cecb72384091724a1c2d35da10a71473e16c926f',
+    'CPU': 'b45c1860e038baa0642b352ccf447ed5e14430342a11dd75bae52f39',
+    'ERA': '13375a4a5470b564246a3251ea0ccfef046ee5bcaf3ed6de6315abc7'
+};
+
+// Cache for pool data (10 minutes TTL)
+let poolsCache = {
+    data: null,
+    lastFetched: null,
+    TTL: 10 * 60 * 1000 // 10 minutes in milliseconds
+};
+
+// Function to fetch pool data from cexplorer API
+const fetchPoolsData = async () => {
+    console.log('Fetching pools data from Cexplorer API...');
+    const api = await initCexplorerApi();
+    const poolsData = {};
+
+    for (const [ticker, poolId] of Object.entries(POOLS)) {
+        try {
+            const result = await api.getPoolDetail({ pool_id: poolId });
+            let poolData = result.data || result;
+
+            // Limit epochs array to 10 entries
+            if (poolData && poolData.epochs && Array.isArray(poolData.epochs)) {
+                poolData.epochs = poolData.epochs.slice(0, 10);
+            }
+
+            poolsData[ticker] = poolData;
+            console.log(`Fetched data for pool: ${ticker}`);
+        } catch (error) {
+            console.error(`Error fetching pool ${ticker}:`, error.message);
+            poolsData[ticker] = { error: error.message };
+        }
+    }
+
+    return poolsData;
+};
+
+// Function to get pools data (from cache or fresh)
+const getPoolsData = async () => {
+    const now = Date.now();
+
+    // Check if cache is valid
+    if (poolsCache.data && poolsCache.lastFetched && (now - poolsCache.lastFetched < poolsCache.TTL)) {
+        console.log('Returning cached pools data');
+        return {
+            poolData: poolsCache.data,
+            cached: true,
+            cachedAt: new Date(poolsCache.lastFetched).toISOString(),
+            nextRefresh: new Date(poolsCache.lastFetched + poolsCache.TTL).toISOString()
+        };
+    }
+
+    // Fetch fresh data
+    const freshData = await fetchPoolsData();
+
+    // Update cache
+    poolsCache.data = freshData;
+    poolsCache.lastFetched = now;
+
+    return {
+        poolData: freshData,
+        cached: false,
+        cachedAt: new Date(now).toISOString(),
+        nextRefresh: new Date(now + poolsCache.TTL).toISOString()
+    };
+};
+
 app.use(express.static('./pngOutput'));
 
 app.use(cors({
@@ -399,6 +498,22 @@ app.get("/api", async function (request, res) {
     console.log(result.next_run);
     console.log(executionDate);
     res.end(JSON.stringify(result));
+});
+
+// Pools endpoint - returns pool information from Cexplorer API with 10-minute cache
+app.get("/pools", async function (request, res) {
+    res.type('json');
+
+    try {
+        const poolsResult = await getPoolsData();
+        res.json(poolsResult);
+    } catch (error) {
+        console.error('Error in /pools endpoint:', error.message);
+        res.status(500).json({
+            error: 'Failed to fetch pools data',
+            message: error.message
+        });
+    }
 });
 
 console.log("starting the web server at localhost:"+process.env.port);
